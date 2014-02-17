@@ -126,11 +126,29 @@
 
 % Write some science here.
 
-Madonreikähyökkäys on erityisen voimakas hyökkäys langattomissa ad hoc -verkoissa.~\cite{leashes,deworm,liteworp,delphi,antenna}.
 
-\newpage
+Langattomat päätelaitteet -- kuten matkapuhelimet, PDA:t ja kannettavat tietokoneet -- voivat muodostaa langattoman ad hoc -verkon, jonka avulla ne voivat kommunikoida ilman erillistä verkkoinfrastruktuuria. \cite{delphi}. Sensori- ja ad hoc -verkot voivat toimia viestintäalustana monissa erilaisissa käyttötarkoituksissa kuten pelastus-, armeija- \cite{leashes} sekä myös siviilikäytössä \cite{liteworp}. Esimerkiksi luonnonkatastrofin jäljiltä perinteiset langattomat tukiasemat voivat olla tuhoutuneet ja pelastuslaitosten työntekijät voivat olla viestinnässään ad hoc -verkkojen varassa \cite{leashes}.
+
+\noindent \\
+Näiden verkkojen suurimpia etuja ovat käyttöönoton nopeus ja kustannustehokkuus \cite{delphi,leashes}, sillä laitteisto on usein edullista ja päätelaitteet osaavat itsenäisesti luoda verkon. Vaikka ad hoc -verkkoja voi muodostaa myös langallisesti, on useimmiten käytössä langattomat teknologiat \cite{leashes} ja siksi keskitymme niihin.
+
+\noindent \\
+Pääosa teknologian alkuvaiheen tutkimuksesta on keskittynyt näiden lupausten toteuttamiseen luoden reititysprotokollia ja muita välttämättömiä viestinnän osia \cite{liteworp}. Ad hoc -verkkojen avoimuuden ja autonomisuuden seurauksena ne ovat erityisen haavoittuvia monille erilaisille hyökkäyksille: \emph{salakuuntelu} (eavesdropping), \emph{väärennys} (spoofing) ja \emph{toistaminen} (replay) \cite{leashes}. Näiden lisäksi hyökkääjä voi tahallisesti olla välittämättä paketteja,  \emph{musta aukko -hyökkäys} (blackhole attack), tai syöttää niitä verkkoon paljon tukehduttaakseen sen järkevän käytön,  \emph{valkoinen aukko -hyökkäys} (white hole attack) \cite{delphi}. \emph{Madonreikähyökkäys} (wormhole attack) on erityisen vakava hyökkäys ad hoc -verkoissa \cite{liteworp}.
+
+\noindent \\
+Madonreikähyökkäyksessä kaksi tai useampi paha-aikeista tahoa toimivat yhteistyössä saadakseen liikenteen ohjautumaan niiden välillä kulkevaa reittiä pitkin, jotta voivat toteuttaa edellä mainittuja hyökkäyksiä. Nämä tahot välittävät kaikki kuulemansa paketit toiselle osapuolelle, joka toistaa ne omassa päässään. Tämä pakettien välitys voidaan toteuttaa dedikoidulla suurinopeuksisella linkillä, pakettien kapseloinnilla normaalia verkkoa pitkin tai vaikka suuritehoisella lähettimellä. \cite{liteworp}. Tunnelin ollessa toiminnassa se häiritsee reititysprotokollia tarjoten lyhimmän ja yleensä nopeimman reitin, joten muut verkon laitteet päätyvät lähettämään suuren osan paketeista sen läpi. Erityisen salakavalan hyökkäyksestä tekee se, että hyökkääjien ei tarvitse murtaa mitään salausta koska koko hyökkäys perustuu pakettien kopiointiin (salakuunteluun ja sen jälkeiseen toistoon) verkon osasta toiseen.
+
+\noindent \\
+Esittelemme luvussa 2 madonreikähyökkäysten hyökkääjä- \cite{delphi} sekä hyökkäystyypit \cite{liteworp} minkä jälkeen kerron laitteistoriippuvaisista puolustuskeinoista luvussa 3 ja protokollapohjaisista puolustusmekanismeista luvussa 4. Yhteenvedon näistä esitämme luvussa 5.
+
 \section{Hyökkäystyypit}
 
+Madonreikähyökkääjiä on kahta eri tyyppiä: \emph{piilotettu} ja \emph{avoin} \cite{delphi}.
+
+\subsection{Piilotettu hyökkäys}
+\subsection{Avoin hyökkäys}
+
+\noindent \\
 Madonreikähyökkäyksiä on viittä eri tyyppiä. \cite[s. 3-4]{liteworp}
 
 \subsection{Pakettikapselointi}
@@ -139,17 +157,31 @@ Madonreikähyökkäyksiä on viittä eri tyyppiä. \cite[s. 3-4]{liteworp}
 \subsection{Pakettivälitys}
 \subsection{Protokollapoikkeamat}
 
-\newpage
 \section{Laitteistoriippuvaiset puolustusmekanismit}
 
 Nämä puolustusmekanismit eivät vaadi reititysprotokolliin muutoksia, mutta niillä on laitteistovaatimuksia.
 
 \subsection{Aika- ja geohihnat}
 Yih-Chun Hu et al kertovat aika- ja geohihnoista \cite{leashes}
+
+\begin{itemize}
+\item Vahva aikasynkronointivaativuus tai
+\item lokaatiotiedon tarkkuus (esim. GPS)
+\item muisti- ja laskentavaativuudet - merkle-puut, tiivisteet, symm. krypto
+\item ei sovi sensoriverkkoihin (resurssivähyys)
+\end{itemize}
+
 \subsection{Suunta-antenni}
 Lingxuan Hu ja David Evans kuvaavat suunta-antennin käyttöä madonreikien estämisessä \cite{antenna}
+\begin{itemize}
+\item laitteiden sisäisen kompassin tarkka suuntima
+\item magneeteilla häiriötä
+\item vaatii 3. osapuolen todentamaan liikenteen suuntaa
+\item olettaa linkkien väliset salaukset
+\item naapurilistat
+\item Worawannotai-hyökkäys (erikoistapaus todentaja-aseman väärinkäytöstä)
+\end{itemize}
 
-\newpage
 \section{Puhtaasti protokollapohjaiset puolustusmekanismit}
 Seuraavilla ratkaisuilla on laajempi käyttöpotentiaali, koska ne eivät vaadi erityislaitteistoa.
 
@@ -157,14 +189,33 @@ Seuraavilla ratkaisuilla on laajempi käyttöpotentiaali, koska ne eivät vaadi 
 
 Hayajneh et al kuvailevat DeWorm-protokollan \cite{deworm}
 
+\begin{itemize}
+\item Isossa verkossa raskas
+\item verkkoliikenne-kustannukset
+\item pala palalta polun tarkistus jokaiselle eri polulle
+\end{itemize}
+
 \subsection{DelPHI}
 
 Hon Sun Chiu ja King-Shan Lui kertovat viiveeseen perustuvasta DelPHI-protokollastaan \cite{delphi}
+
+\begin{itemize}
+\item Kokonaiskesto RTT / hyppyjen määrällä
+\item Normaali verkko: A->B->C->D->E (4 hyppyä) 
+\item Rei'itetty salattu verkko: A->(M1->M2)->E (1 hyppy)
+\item rei'itetty on nopeampi, mutta RTT / hyppyjen määrällä on sillä selvästi isompi kuin pienin hypyin etenevä rehti verkko => madonreikä.
+\end{itemize}
 
 \subsection{LiteWorp}
 
 Khalil et al esittelevät naapurilistoihin ja vartiointiin perustuvan LiteWorp-protokollan \cite{liteworp}
 
+\begin{itemize}
+\item vartijat
+\item väärät syytökset vs verkkopakettien törmäilyt
+\item vahtilistojen ja -puskurien tilavaativuudet
+\item protokollan heikkeneminen tiheissä verkoissa (naapuri-lkm >20)
+\end{itemize}
 
 % --- References ---
 %
