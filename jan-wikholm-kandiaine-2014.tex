@@ -141,21 +141,40 @@ Madonreikähyökkäyksessä kaksi tai useampi paha-aikeista tahoa toimivat yhtei
 \noindent \\
 Esittelemme luvussa 2 madonreikähyökkäysten hyökkääjä- \cite{delphi} sekä hyökkäystyypit \cite{liteworp} minkä jälkeen kerron laitteistoriippuvaisista puolustuskeinoista luvussa 3 ja protokollapohjaisista puolustusmekanismeista luvussa 4. Yhteenvedon näistä esitämme luvussa 5.
 
-\section{Hyökkäystyypit}
+\section{Hyökkääjä- ja hyökkäystyypit}
 
-Madonreikähyökkääjiä on kahta eri tyyppiä: \emph{piilotettu} ja \emph{avoin} \cite{delphi}.
+Madonreikähyökkääjiä on kahta eri tyyppiä: \emph{piilotettu} ja \emph{avoin} \cite{delphi} ja hyökkäyksiä on viittä eri tyyppiä. \cite{liteworp}. Kaikkia hyökkäystyyppejä ei ole käsitelty kaikissa puolustuskeinoissa, joten käsittelemättömien hyökkäystyyppien torjumisen toimivuus on erinomainen kohde jatkotutkimukselle.
 
-\subsection{Piilotettu hyökkäys}
-\subsection{Avoin hyökkäys}
+\subsection{Piilotettu hyökkääjä}
 
-\noindent \\
-Madonreikähyökkäyksiä on viittä eri tyyppiä. \cite[s. 3-4]{liteworp}
+Piilotetut hyökkääjät toimivat verkossa kertomatta muille verkon laitteille omasta olemassaolostaan. Ne kuuntelevat liikennettä ja siirtävät paketteja madonreiän läpi täysin muokkaamatta. Tällöin kaukanakin olevat laitteet voivat luulla madonreiän läpi tulevia paketteja naapureilta tuleviksi, koska eivät tiedä välissä olevan toistimena toimiva madonreikä.
+
+Esimerkiksi pakettihihnat toimivat piilotettuja hyökkääjiä vastaan.
+
+\subsection{Avoin hyökkääjä}
+
+Avoimet hyökkääjät rekisteröityvät verkkoon kuten muutkin laitteet. Muille verkon laitteille näyttää siltä, että nämä laitteet ovat ensimmäisen asteen naapureita ja siten niiden kautta löytyvä lyhyt polku on täysin käypä vaihtoehto. Tapa, jolla madonreikä on muodostettu, on jokin alla kuvailluista viidestä hyökkäystavasta.
 
 \subsection{Pakettikapselointi}
+
+Pakettikapseloinnissa hyökkääjät H1 ja H2 voivat käyttää jo olemassa olevaa verkkoa: H1 kuulee paketin ja luo uuden H2:lle suunnatun paketin, jonka sisältönä on sellaisenaan H1:n kaappaama paketti. Kun tämä kapseloitu paketti saavuttaa H2:n se toistaa alkuperäisen sisällön sellaisenaan verkkoon, joten sen naapurit luulevat H1:n naapureiden olevan lähellä.
+
 \subsection{Erilliskaistahyökkäys}
+
+Mikäli hyökkääjillä on normaalin lähetyskaistan - esim. wlan-verkko - lisäksi käytössä vaikkapa yksinkertaisesti kytketty ethernetverkko, voivat ne kommunikoida yleistä verkkoa nopeammin ja sen kantamaa pidemmälle. Tätä kutsutaan erilliskaistahyökkäykseksi ja tämä on nimenomaan se hyökkäys, johon suurin osa puolustuskeinoista viittaa itse madonreikähyökkäyksenä.
+
 \subsection{Suurteholähetys}
+
+Yksi oletus, mikä puolustuskeinoja laatiessa pitää pitää mielessä on, että hyökkääjille pitää olettaa loputtomat resurssit toisin kuin muille verkon laitteille, joita nimenomaan yleensä yhdistää resurssien vähyys. Tästä oletuksesta yhtenä esimerkkinä on suurteholähetys: hyökkääjälaite lähettää kaappaamansa reitityspaketit huomattavan suurella lähetysteholla ja täten saa aikaan sen itsensä lävitse kulkevan lyhyimmän reitin. Tämä hyökkäys ei siis vaadi kahta osapuolta. 
+
 \subsection{Pakettivälitys}
+
+Kuten suurteholähetys pakettivälityshyökkäys ei vaadi hyökkääjäparia vaan sen voi suorittaa yksikin vihamielinen laite. Tässä hyökkääjä on kahden laitteen välissä välittäen paketteja jolloin nämä laitteet luulevat olevansa naapureita ja hyökkääjä niiden välissä voi suorittaa esimerkiksi salakuuntelua tai palvelunestohyökkäystä.
+
+
 \subsection{Protokollapoikkeamat}
+
+Protokollapoikkeamilla tarkoitetaan paha-aikeisten laitteiden tahallista verkkoprotokollan rikkomista: esimerkiksi pakettitörmäysten estämiseksi tietyt protokollat vaativat reitityspakettien lähetyksessä pientä viivettä - paha-aikeinen laite voi täten lähettää paketit heti ja aiheuttaa tavallisille laitteille haittaa törmäyksillä. Toinen vaihtoehto on reitityspakettien lähettämättä jättäminen jolloin verkon reititys ja polunetsintä ei toimi oikein. Kummassakin tapauksessa hyökkääjä voi junailla toimensa siten, että suuri osa verkon liikenteestä päätyy reitittymään sen läpi.
 
 \section{Laitteistoriippuvaiset puolustusmekanismit}
 
