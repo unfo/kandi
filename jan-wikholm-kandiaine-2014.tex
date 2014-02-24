@@ -181,14 +181,69 @@ Protokollapoikkeamilla tarkoitetaan paha-aikeisten laitteiden tahallista verkkop
 Nämä puolustusmekanismit eivät vaadi reititysprotokolliin muutoksia, mutta niillä on laitteistovaatimuksia.
 
 \subsection{Aika- ja geohihnat}
-Yih-Chun Hu et al kertovat aika- ja geohihnoista \cite{leashes}
+Yih-Chun Hu et al \cite{leashes} kuvailevat uuden mekanismin - \emph{pakettihihnat} (packet leashes) - ja sen kaksi eri varianttia: \emph{aikahihnan} (temporal leash) ja \emph{geohihnan} (geographic leash). Tässä hihnalla tarkoitetaan sellaista dataa, jolla paketin enimmäiskantamaa voidaan rajoittaa.
 
-\begin{itemize}
-\item Vahva aikasynkronointivaativuus tai
-\item lokaatiotiedon tarkkuus (esim. GPS)
-\item muisti- ja laskentavaativuudet - merkle-puut, tiivisteet, symm. krypto
-\item ei sovi sensoriverkkoihin (resurssivähyys)
-\end{itemize}
+\noindent \\
+Pakettihihnojen lisäksi he luovat uuden TIK-verkkoprotokollan, joka käyttää aikahihnoja madonreikiä vastaan.
+
+\paragraph{Aikahihnat} 
+\noindent \\
+Aikahihnojen edellytyksenä on tarkka kellojen synkronointitarkkuus: muutaman mikrosekunnin tai jopa satojen nanosekuntien tarkkuus. Kaikkien laitteiden pitää myöskin olla tietoisia virhemarginaalin suuruusluokasta kahden laitteen välillä. Tällainen synkronointitarkkuus onnistuu esimerkiksi GPS:n avulla. Vaikka tarkkuusvaatimus on erittäin tiukka, on se kirjoittajien mukaan täysin hyväksyttävä ottaen huomioon madonreikähyökkäyksen vakavuuden.
+
+\noindent \\
+Aikahihnaa muodostaessa lähettäjä päättää enimmäispituuden lähetykselle ja laskee kauanko valonnopeudella kulkevalla radiosignaalilla kestää sinne päätyä – tässä tietenkin otetaan huomioon synkronoinnin virhemarginaali – ja tämän avulla lähettäjä laskee paketille vanhenemisajan, jonka jälkeen paketti on hylättävä. Tunnelointi aiheuttaa pakosti viivettä, koska se kulkee kauemmaksi, joten madonreiän toisella puolella olevat laitteet pudottavat vanhentuneet paketit.
+
+\noindent \\
+Vaikka aikahihna on hihnatyypeistä tarkempi on sen haasteena se, ettei lähettäjä tiedä aina tarkalleen omaa lähetysaikaansa, koska fyysisen kerroksen lähetysmekanismi voi joutua odottamaan; täten on vaikeaa etukäteen luoda lähetysajankohtaan perustuvaa digitaalista allekirjoitusta.
+
+\paragraph{Geohihnat}
+\noindent \\
+Geohihnoja käytettäessä kaikkien verkon laitteiden pitää tietää oma sijaintitietonsa sekä niiden pitää pystyä synkronoimaan kellonsa muiden kanssa; joskin kellojen synkronointitarkkuus ei ole niin tärkeä seikka, koska laitteiden liikkumisvauhti suhteessa valonnopeuteen on marginaalinen.
+
+\noindent \\
+Geohihnan toiminta on hyvin yksinkertainen: laite tarkistaa onko sen oma sijainti alkuperäisessä paketissa määritellyn sallitun matkan päässä. Koska paketit allekirjoitetaan digitaalisesti, voi laite luottaa paikannustiedon olevan alkuperäiseltä lähteeltä. Toisin kuin pelkkä matkan pituuteen perustuva tarkistus geohihnat toimivat myös siinä tilanteessa, että madonreikä kuljettaa paketin jonkin esteen ohi.
+
+\noindent \\
+Geohihnoissa laitteet tietävät toistensa oletetun maksimiliikenopeuden ja täten madonreikätunneloitu paketti voidaan tunnistaa ilkivaltaisen laitteen lähettämäksi, jos se lähettää verkkoon kaksi pakettia joiden lokaatiotiedoissa on tapahtunut maksimiliikenopeutta nopeampaa liikettä edellyttävä muutos.
+
+\paragraph{TIK-protokolla} 
+\noindent \\
+TIK-protokollan nimi tulee sanoista ``TESLA with Instant Key disclosure``, eli se on TESLA-protokollan laajennus välittömällä avainten paljastuksella. TIK-protokolla käyttää kirjoittajien aikahihnoja.
+
+\noindent \\
+Tärkeimpänä ominaisuutena koko aikahihnafunktion toiminnassa on aikaleimojen luotettavuus; leimat pitää pystyä todentamaan. Jaetut avaimet hylätään suoraan todeten niiden hallinan olevan liian raskas operaatio. Toisena ideana on digitaalisen allekirjoituksen liittäminen jokaiseen pakettiin, jolloin jokaiselle laitteelle riittää yksi julkinen-yksityinen–avainpari ja jokaisen laitteen tarvitsee tietää vain tämä kaikkien julkisten avainten joukko. Digitaaliset allekirjoitukset kuitenkin yleensä perustuvat raskaaseen asymmetriseen kryptografiaan, joka ei sovi ad hoc –verkkojen oletettuun resurssivähyyteen.
+
+\noindent \\
+Symmetriseksi vaihtoehdoksi raportti tarjoaa tiivisteistä koostuvaa binääripuuta (Merkle-tiivistepuu). Tiivisteiden hyväksi puoleksi kerrotaan niiden erittäin tehokas laskeminen ja yksisuuntaisuus. Merkle-puussa jokainen tiiviste muodostuu kahden lapsensa tiivisteistä aina juureen saakka. Tämä juuritiiviste on laitteen julkinen avain ja alimman tason lapset ovat yksityinen avain.
+
+\noindent \\
+Lähettäjän avainnippu koostuu satunnaisluvuista, jotka on tallennettu Merkle-puun pohjalle siten että ne on indeksoitu juoksevaan järjestykseen. Tätä järjestyslukua vastaa ajanhetkien järjestysluku; ajanlasku alkaa laitteiden yhtenään sopimasta hetkestä ja etenee sovituin lisäyksin (esimerkiksi 11,5 mikrosekuntia). 
+
+\noindent \\
+Vastaanottaja tietää jo etukäteen lähettäjän julkisen avaimen, eli Merkle-puun juuritiivisteen, ja jokaisen paketin yhteydessä se saa neljä uutta datapalaa:
+
+\begin{enumerate}
+\item tiivisteen viestistä ja avaimesta $K_i$,
+\item viestin,
+\item tiedot, joiden avulla avaimesta $K_i$ saadaan laskettua juuritiiviste, sekä
+\item avaimen $K_i$.
+\end{enumerate}
+
+\noindent \\
+Nämä osat tulevat nimenomaan tarkasti tässä järjestyksessä. Koska avainta ei ole viestin tiivistelaskennan aikaan vielä lähetetty, vastaanottaja voi nyt olla varma, ettei kukaan ole voinut väärentää tiivistettä. Vastaanottajan tarkistettua viestin aitouden se tarkistaa vielä aikahihnan rajat ja katsoo, onko paketti voimassa.
+
+\paragraph{Resurssivaativuus} 
+\noindent \\
+Resurssien niukkuuteen kirjoittajat mainitsevat pääratkaisuna symmetrisen kryptografian käyttö asymmetrisen sijaan – operaatioiden nopeuserot voivat olla kolmesta neljään suuruusluokkaa (100–1000-kertaisia) hitaampia jälkimmäisessä.
+
+\noindent \\
+TIK-protokollaa arvioidessaan kirjoittajat tarkastelivat nykyisten (2001) mobiililaitteiden laskentatehoa ja muistimäärää. He toteavat protokollan laskenta- ja muistivaatimukset mahdollisiksi saatavilla olevilla laitteilla; joskin huomauttavat ettei TIK sovi resursseiltaan aivan kaikkein köyhimpiin laitteisiin kuten sensoriverkkoihin.
+
+\noindent \\
+Allekirjoitusta varten muodostettavan tiivistepuun muodostusta ja tallennusta voi optimoida siten että vain osa puusta säilötään muistissa ja osa lasketaan tarvittaessa. Tällaisen optimoinnin takia yhden vuorokauden yksityiset avaimet sisältävä osittainen puu saadaan mahtumaan 2,5 megatavuun kokonaisen puun 170 gigatavun sijaan.
+
+\noindent \\
+Kirjoittajien yhteenveto protokollastaan: TIK-protokolla suojaa laitteita tehokkaasti ilkivaltaiselta toistolta, väärennykseltä ja madonreikähyökkäyksiltä; sekä varmistaa tuoreuden. Protokolla on toteutettavissa nykylaitteistoilla vaikka se ei sovikaan kaikista rajoitetuimpiin sensoriverkkoihin.
 
 \subsection{Suunta-antenni}
 Lingxuan Hu ja David Evans kuvaavat suunta-antennin käyttöä madonreikien estämisessä \cite{antenna}
