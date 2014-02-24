@@ -165,7 +165,7 @@ Mikäli hyökkääjillä on normaalin lähetyskaistan - esim. wlan-verkko - lis�
 
 \subsection{Suurteholähetys}
 
-Yksi oletus, mikä puolustuskeinoja laatiessa pitää pitää mielessä on, että hyökkääjille pitää olettaa loputtomat resurssit toisin kuin muille verkon laitteille, joita nimenomaan yleensä yhdistää resurssien vähyys. Tästä oletuksesta yhtenä esimerkkinä on suurteholähetys: hyökkääjälaite lähettää kaappaamansa reitityspaketit huomattavan suurella lähetysteholla ja täten saa aikaan sen itsensä lävitse kulkevan lyhyimmän reitin. Tämä hyökkäys ei siis vaadi kahta osapuolta. 
+Yksi oletus, mikä puolustuskeinoja laatiessa täytyy pitää mielessä on, että hyökkääjille voi olettaa loputtomat resurssit toisin kuin muille verkon laitteille, joita nimenomaan yleensä yhdistää resurssien vähyys. Tästä oletuksesta yhtenä esimerkkinä on suurteholähetys: hyökkääjälaite lähettää kaappaamansa reitityspaketit huomattavan suurella lähetysteholla ja täten saa aikaan sen itsensä lävitse kulkevan lyhimmän reitin. Tämä hyökkäys ei siis vaadi kahta osapuolta. 
 
 \subsection{Pakettivälitys}
 
@@ -174,13 +174,13 @@ Kuten suurteholähetys pakettivälityshyökkäys ei vaadi hyökkääjäparia vaa
 
 \subsection{Protokollapoikkeamat}
 
-Protokollapoikkeamilla tarkoitetaan paha-aikeisten laitteiden tahallista verkkoprotokollan rikkomista: esimerkiksi pakettitörmäysten estämiseksi tietyt protokollat vaativat reitityspakettien lähetyksessä pientä viivettä - paha-aikeinen laite voi täten lähettää paketit heti ja aiheuttaa tavallisille laitteille haittaa törmäyksillä. Toinen vaihtoehto on reitityspakettien lähettämättä jättäminen jolloin verkon reititys ja polunetsintä ei toimi oikein. Kummassakin tapauksessa hyökkääjä voi junailla toimensa siten, että suuri osa verkon liikenteestä päätyy reitittymään sen läpi.
+Protokollapoikkeamilla tarkoitetaan paha-aikeisten laitteiden tahallista verkkoprotokollan rikkomista: esimerkiksi pakettitörmäysten estämiseksi tietyt protokollat vaativat reitityspakettien lähetyksessä pientä viivettä - paha-aikeinen laite voi täten lähettää paketit heti ja aiheuttaa tavallisille laitteille haittaa törmäyksillä. Toinen vaihtoehto on reitityspakettien lähettämättä jättäminen jolloin verkon reititys ja polunetsintä eivät toimi oikein. Kummassakin tapauksessa hyökkääjä voi junailla toimensa siten, että suuri osa verkon liikenteestä päätyy reitittymään sen läpi.
 
 \section{Laitteistoriippuvaiset puolustusmekanismit}
 
 Nämä puolustusmekanismit eivät vaadi reititysprotokolliin muutoksia, mutta niillä on laitteistovaatimuksia.
 
-\subsection{Aika- ja geohihnat}
+\subsection{Pakettihihnat ja TIK-protokolla}
 Yih-Chun Hu et al \cite{leashes} kuvailevat uuden mekanismin - \emph{pakettihihnat} (packet leashes) - ja sen kaksi eri varianttia: \emph{aikahihnan} (temporal leash) ja \emph{geohihnan} (geographic leash). Tässä hihnalla tarkoitetaan sellaista dataa, jolla paketin enimmäiskantamaa voidaan rajoittaa.
 
 \noindent \\
@@ -211,7 +211,7 @@ Geohihnoissa laitteet tietävät toistensa oletetun maksimiliikenopeuden ja tät
 TIK-protokollan nimi tulee sanoista ``TESLA with Instant Key disclosure``, eli se on TESLA-protokollan laajennus välittömällä avainten paljastuksella. TIK-protokolla käyttää kirjoittajien aikahihnoja.
 
 \noindent \\
-Tärkeimpänä ominaisuutena koko aikahihnafunktion toiminnassa on aikaleimojen luotettavuus; leimat pitää pystyä todentamaan. Jaetut avaimet hylätään suoraan todeten niiden hallinan olevan liian raskas operaatio. Toisena ideana on digitaalisen allekirjoituksen liittäminen jokaiseen pakettiin, jolloin jokaiselle laitteelle riittää yksi julkinen-yksityinen–avainpari ja jokaisen laitteen tarvitsee tietää vain tämä kaikkien julkisten avainten joukko. Digitaaliset allekirjoitukset kuitenkin yleensä perustuvat raskaaseen asymmetriseen kryptografiaan, joka ei sovi ad hoc –verkkojen oletettuun resurssivähyyteen.
+Tärkeimpänä ominaisuutena koko aikahihnafunktion toiminnassa on aikaleimojen luotettavuus; leimat pitää pystyä todentamaan. Jaetut avaimet hylätään suoraan todeten niiden hallinnan olevan liian raskas operaatio. Toisena ideana on digitaalisen allekirjoituksen liittäminen jokaiseen pakettiin, jolloin jokaiselle laitteelle riittää yksi julkinen-yksityinen–avainpari ja jokaisen laitteen tarvitsee tietää vain tämä kaikkien julkisten avainten joukko. Digitaaliset allekirjoitukset kuitenkin yleensä perustuvat raskaaseen asymmetriseen kryptografiaan, joka ei sovi ad hoc –verkkojen oletettuun resurssivähyyteen.
 
 \noindent \\
 Symmetriseksi vaihtoehdoksi raportti tarjoaa tiivisteistä koostuvaa binääripuuta (Merkle-tiivistepuu). Tiivisteiden hyväksi puoleksi kerrotaan niiden erittäin tehokas laskeminen ja yksisuuntaisuus. Merkle-puussa jokainen tiiviste muodostuu kahden lapsensa tiivisteistä aina juureen saakka. Tämä juuritiiviste on laitteen julkinen avain ja alimman tason lapset ovat yksityinen avain.
@@ -234,7 +234,7 @@ Nämä osat tulevat nimenomaan tarkasti tässä järjestyksessä. Koska avainta 
 
 \paragraph{Resurssivaativuus} 
 \noindent \\
-Resurssien niukkuuteen kirjoittajat mainitsevat pääratkaisuna symmetrisen kryptografian käyttö asymmetrisen sijaan – operaatioiden nopeuserot voivat olla kolmesta neljään suuruusluokkaa (100–1000-kertaisia) hitaampia jälkimmäisessä.
+Resurssien niukkuuteen kirjoittajat mainitsevat pääratkaisuna symmetrisen kryptografian käyttö asymmetrisen sijaan – operaatioiden nopeuserot voivat olla kolmesta neljään suuruusluokkaa (100--1000-kertaisia) hitaampia jälkimmäisessä.
 
 \noindent \\
 TIK-protokollaa arvioidessaan kirjoittajat tarkastelivat nykyisten (2001) mobiililaitteiden laskentatehoa ja muistimäärää. He toteavat protokollan laskenta- ja muistivaatimukset mahdollisiksi saatavilla olevilla laitteilla; joskin huomauttavat ettei TIK sovi resursseiltaan aivan kaikkein köyhimpiin laitteisiin kuten sensoriverkkoihin.
@@ -246,7 +246,8 @@ Allekirjoitusta varten muodostettavan tiivistepuun muodostusta ja tallennusta vo
 Kirjoittajien yhteenveto protokollastaan: TIK-protokolla suojaa laitteita tehokkaasti ilkivaltaiselta toistolta, väärennykseltä ja madonreikähyökkäyksiltä; sekä varmistaa tuoreuden. Protokolla on toteutettavissa nykylaitteistoilla vaikka se ei sovikaan kaikista rajoitetuimpiin sensoriverkkoihin.
 
 \subsection{Suunta-antenni}
-Lingxuan Hu ja David Evans kuvaavat suunta-antennin käyttöä madonreikien estämisessä \cite{antenna}
+Lingxuan Hu ja David Evans kuvaavat suunta-antennin käyttöä madonreikien estämisessä \cite{antenna}.
+
 \begin{itemize}
 \item laitteiden sisäisen kompassin tarkka suuntima
 \item magneeteilla häiriötä
