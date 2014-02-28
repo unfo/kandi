@@ -320,18 +320,31 @@ Tätä erityistapausta varten todentajalaitteen positiolle pitää asettaa tiuke
 \label{fig:test}
 \end{figure}
 
+
+
 \section{Puhtaasti protokollapohjaiset puolustusmekanismit}
 Seuraavilla ratkaisuilla on laajempi käyttöpotentiaali, koska ne eivät vaadi erityislaitteistoa.
 
 \subsection{DeWorm}
 
-Hayajneh et al kuvailevat DeWorm-protokollan \cite{deworm}
+Hayajneh et al kuvailevat DeWorm-protokollan \cite{deworm}, jonka mainitaan erityisesti olevan tehokas \emph{piilotettuja hyökkääjiä} vastaan -- eli madonreikähyökkääjät M1 ja M2 siirtävät paketteja keskenään eivätkä itse osallistu verkon laitteina reititykseen.
 
-\begin{itemize}
-\item Isossa verkossa raskas
-\item verkkoliikenne-kustannukset
-\item pala palalta polun tarkistus jokaiselle eri polulle
-\end{itemize}
+\paragraph{Perusajatus}
+\noindent \\
+Kun laite A haluaa selvittää onko sen ja laitteen B välissä madonreikä, se aloittaa DeWorm-protokollan mukaisen vaihtoehtoisen reittihaun: jokaiselle noodille polulla A--B katsotaan, että sitä seuraavasta seuraavaan noodiin vievän reitin pisimmän ja lyhyimmän siirtymän pituuksien erotus ei ole raja-arvoa $n$ suurempi. 
+
+\noindent \\
+Esimerkki: A--B väli on kokonaisuudessaan A-1-2-3-4-B. A pyytää kaikilta naapureiltaan löytämään reitin noodiin 2 siten että reitti ei kulje nykyisen reitin kautta eli noodin 1 läpi. Reitti A--2 on kahden hypyn pituinen; jos löytyy yksi tai useampi reitti, jonka pituus on $2 + n$ tai enemmän, A olettaa välillä A--2 olevan madonreikä. Mikäli madonreikää ei löydy, seuraavaksi tarkistetaan 1--3 ja taas pyydetään 1:n naapureita löytämään reitti 3:een kulkematta noodin 2 kautta. Tätä jatketaan kunnes erikoistapauksena käsitellään toisiksi viimeinen noodi -- 4 -- joka pyytää kaikkia naapureitaan löytämään reitin B:hen kulkematta itsensä läpi. Mikäli missään vaiheessa ei ole löytynyt raja-arvoa $n$ suurempia poikkeampia reittien pituuksissa, voi A olla varma ettei matkalla ole madonreikää.
+
+\paragraph{Ongelmat}
+\noindent \\
+Raja-arvon $n$ valinta kriittistä, jotta voidaan tasapainotella virheellisten tunnistusten ja tunnistamatta jättämisen välillä. Kirjoittajien simulointien perusteella he suosittelevat $n$ arvoksi 2--3.
+
+\noindent \\
+Toinen ongelma on niin sanotut kriittiset solmut, eli laitteet jotka legitiimisti yhdistävät kaksi verkkoa ainoana solmukohtana. Tällainen solmukohta näyttää DeWorm-protokollan silmin madonreiältä ja siksi verkon pitää pystyä ottamaan tällainen huomioon esimerkiksi antamalla kriittiselle solmulle ja sen naapureille erivapauden DeWorm-protollan ohitukseen. Tällainen erivapaus on mahdollinen sallia, koska DeWorm-protokolla on suunniteltu ja testattu liikkumattomiin verkkoihin, joissa verkon muoto on tiedossa etukäteen.
+
+\noindent \\
+Viimeisimpänä ongelmana on protokollan suuri liikennemäärä: jokainen verkon noodi voi päätyä tarkistamaan madonreikien olemassaolon jokaiseen noodiin, jonka kanssa se on yhteydessä. Kirjoittajat eivät kuitenkaan kuvaile, miten laitteen pitäisi päättää aloittaa DeWorm-protokollatarkistus.
 
 \subsection{DelPHI}
 
