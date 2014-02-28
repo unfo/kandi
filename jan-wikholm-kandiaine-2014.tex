@@ -281,7 +281,7 @@ Todentaja laitteen, \emph{C}, rooli on toimia todistajana A:lle B:n suhteen -- j
 
 \noindent\\
 \begin{tikzpicture}
-  [scale=.8,auto=left,every node/.style={circle,fill=blue!20}]
+  [scale=.8,auto=left,every node/.style={circle,fill=gray!20}]
   \node (A) at (4,8)  {A};
   \node (B) at (8,8) {B};
   \node (C) at (6,9)  {C};
@@ -348,14 +348,57 @@ Viimeisimpänä ongelmana on protokollan suuri liikennemäärä: jokainen verkon
 
 \subsection{DelPHI}
 
-Hon Sun Chiu ja King-Shan Lui kertovat viiveeseen perustuvasta DelPHI-protokollastaan \cite{delphi}
+Hon Sun Chiu ja King-Shan Lui kertovat viiveeseen perustuvasta DelPHI-protokollastaan \cite{delphi}. Koko protokollan ydinajatus on hyvin yksinkertainen: verkon jokaisen hypyn pitäisi olla pituudeltaan suunnilleen yhtä pitkä ja täten madonreiän voi löytää havaitsemalla reitin, jonka lähetysaika per hyppyjen määrä on suuri. Normaali reitti verkon poikki etenee tasaisin hyppäyksin, joita voi olla melko montakin verkon laidalta toiselle, mutta madonreiässä liikutaan pitkä fyysinen matka yhden hypyn aikana. Tällöin tuo yksi hyppy erottuu selkeästi hitaampana ja täten epäilyttävänä.
 
-\begin{itemize}
-\item Kokonaiskesto RTT / hyppyjen määrällä
-\item Normaali verkko: A->B->C->D->E (4 hyppyä) 
-\item Rei'itetty salattu verkko: A->(M1->M2)->E (1 hyppy)
-\item rei'itetty on nopeampi, mutta RTT / hyppyjen määrällä on sillä selvästi isompi kuin pienin hypyin etenevä rehti verkko => madonreikä.
-\end{itemize}
+\paragraph{Esimerkki}
+
+\noindent\\
+\begin{tikzpicture}
+  [scale=.8,auto=left,every node/.style={circle,fill=gray!20}]
+  \node (A) at (10,8)  {A};
+  \node (B) at (12,8)  {B};
+  \node (C) at (14,8)  {C};
+  \node (D) at (16,8)  {D};
+  \node (E) at (18,8)  {E};
+
+  \foreach \from/\to in {A/B,B/C,C/D,D/E}
+    \draw (\from) -- (\to);
+
+\end{tikzpicture}
+
+\noindent\\
+Pituus A--E: 4 hyppyä. Aikaa kuluu $T_1$.
+
+\noindent\\
+\begin{tikzpicture}
+  [scale=.8,auto=left,every node/.style={circle,fill=gray!20}]
+  \node (A) at (10,8)  {A};
+  \node (M1) at (12,8)  {(M1};
+
+  \node (M2) at (16,8)  {M2)};
+  \node (E) at (18,8)  {E};
+
+  \foreach \from/\to in {A/M1,M1/M2,M2/E}
+    \draw (\from) -- (\to);
+
+\end{tikzpicture}
+
+\noindent \\
+Pituus: 1 hyppy jos M1 ja M2 ovat \emph{piilotettuja hyökkääjiä}. Aikaa kuluu: $T_2$.
+
+\noindent \\
+Koska molemmissa esimerkeissä signaali kulkee maksimissaan valonnopeutta ei kokonaisaika todennäköisesti ole kovin paljon erilainen, eli $T_1 \approx T_2$ ja täten $(T_1 / 4) < (T_2 / 1)$ vaikka tämä reitti olisi pituutensa puolesta muuten parempi.
+
+\paragraph{Protokollan eteneminen}
+\noindent \\
+
+\begin{enumerate}
+\item Broadcast ``reitti A--B'' kaikille naapureille rekursiivisesti
+\item Päivitetään ``edellinen noodi'' ja ``pituus'' kenttiä paketissa kun sitä reititetään eteenpäin
+\item B lähettää kaikki DelPHI-polunetsintäpaketit suoraan unicastina takaisin lähettäjälle
+\item A saa vastaukset ja analysoi pituudet vs aika/hypyt
+\item Jos kaksi aika/hypyt arvoa eroaa toisistaan raja-arvon $T$ verran => madonreikä
+\end{enumerate}
 
 \subsection{LiteWorp}
 
