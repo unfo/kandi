@@ -31,6 +31,11 @@
 \usepackage{microtype}
 \usepackage{amsfonts,amsmath,amssymb,amsthm,booktabs,color,enumitem,graphicx}
 \usepackage[pdftex,hidelinks]{hyperref}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
 
 % Automatically set the PDF metadata fields
 \makeatletter
@@ -246,16 +251,74 @@ Allekirjoitusta varten muodostettavan tiivistepuun muodostusta ja tallennusta vo
 Kirjoittajien yhteenveto protokollastaan: TIK-protokolla suojaa laitteita tehokkaasti ilkivaltaiselta toistolta, väärennykseltä ja madonreikähyökkäyksiltä; sekä varmistaa tuoreuden. Protokolla on toteutettavissa nykylaitteistoilla vaikka se ei sovikaan kaikista rajoitetuimpiin sensoriverkkoihin.
 
 \subsection{Suunta-antenni}
-Lingxuan Hu ja David Evans kuvaavat suunta-antennin käyttöä madonreikien estämisessä \cite{antenna}.
+Lingxuan Hu ja David Evans kuvaavat suunta-antennin käyttöä madonreikien estämisessä \cite{antenna}. Suunta-antenneja on kahdentyyppisiä: ohjattuja ja kytkettyjä. Ohjatut suunta-antennit tarjoavat tarkempaa suuntausta, mutta ne ovat yleensä liian kalliita sensoriverkkoihin. Kytketty suunta-antenni pitää sisällään useamman staattisesti suunnatun antennin, jotka muodostavat yhtä suurista lähetyssektoreista 360 asteen kattavuuden. Näitä antenneja sitten kytketään päälle sitä mukaan kun halutaan tiettyyn suuntaan lähettää; suuntauksessa käytetään laitteen sisäistä kompassia siten, että sektori numero yksi osoittaa aina itään.
 
-\begin{itemize}
-\item laitteiden sisäisen kompassin tarkka suuntima
-\item magneeteilla häiriötä
-\item vaatii 3. osapuolen todentamaan liikenteen suuntaa
-\item olettaa linkkien väliset salaukset
-\item naapurilistat
-\item Worawannotai-hyökkäys (erikoistapaus todentaja-aseman väärinkäytöstä)
-\end{itemize}
+\noindent \\
+Protkolla perustuu naapurilistoihin ja siihen että verkon laitteet voivat luottaa ilmoitetun naapurin olevan siellä suunnalla, mitä se väittää. Protokolla olettaa, että verkossa on mekanismi, jolla laitteet voivat muodostaa turvallisen linkin keskenään ja että kriittiset viestit ovat kryptattu.
+
+\paragraph{Naapurien löytäminen}
+\noindent\\
+Kun laite A haluaa liittyä verkkoon, se käy läpi jokaisen suunta-antenninsa sektoreista ja lähettää siihen suuntaan yleisen liittymisviestin, joka sisältää A:n oman tunnisteen sekä tiedon ko. sektorin numerosta -- kaikki laitteethan ovat suunnattu samansuuntaisesti. Kun laite B vastaanottaa A:n viestin omalla sektorillaan X se ensimmäisenä tarkistaa, että A:n ilmoitettu sektori on X:stä vastakkainen pudottaen paketin muussa tapauksessa.
+
+\noindent\\
+Mikäli A:n paketti oli B:n mielestä järkevä, se lähettää A:lle A:n tunnisteen salattuna näiden yhteisellä jaetulla avaimella sekä oman tunnisteensa. Jos B:n vastaus tulee A:n lähetyssektorin suunnalta ja että B on ilmoittanut vastakkaisen sektorin omaksi lähetyssektorikseen sekä A onnistuu purkamaan B:n vastauksen ja saamaan vastaukseksi oman tunnisteensa se lisää B:n tunnisteen omaan naapurilistaansa. Tässä vaiheessa A ei ole välttämättä vielä B:n naapurilistalla vaan B hoitaa oman naapurien löytöyrityksen itse valitsemanaan satunnaisena ajankohtana.
+
+\noindent\\
+Tämä yksinkertainen naapurietsintä ei vielä estä madonreikiä. Esimerkiksi seuraavanlainen lineaarinen tapaus on edelleen mahdollinen:
+
+\noindent\\
+$A -> M1 ------> M2 -> B$
+
+\noindent\\
+Missä A:n ja B:n välissä on madonreiän muodostavat laitteet M1 ja M2. Tässä tapauksessa madonreikä voisi olla mielivaltaisen pitkä ja silti laitteet luulisivat olevansa naapureita, koska A:n lähetyssektori on vastakkainen B:n vastaanottosektorille. 
+
+\noindent\\
+Tätä ongelmaa vastaan Hu ja Evans ehdottavat ylimääräisen todentajalaitteen vahvistusta A:n ja B:n suunnille.
+
+\paragraph{Todentajalaite}
+\noindent\\
+Todentaja laitteen, \emph{C}, rooli on toimia todistajana A:lle B:n suhteen -- ja päinvastoin -- että B kuuluu C:lle ja että se kuuluu eli sektorilta kuin A kuulee B:n. Esimerkki:
+
+\noindent\\
+\begin{tikzpicture}
+  [scale=.8,auto=left,every node/.style={circle,fill=blue!20}]
+  \node (A) at (4,8)  {A};
+  \node (B) at (8,8) {B};
+  \node (C) at (6,9)  {C};
+
+  \foreach \from/\to in {A/B,A/C,B/C}
+    \draw (\from) -- (\to);
+
+\end{tikzpicture}
+
+\noindent\\
+Mikäli B on C:n naapuri ja se on eri sektorilla C:lle kuin A:lle niin A voi luottaa B:n olevan oikeasti vieressä eikä madonreikätunnelin toisella puolella.
+
+\paragraph{Worawannotai-hyökkäys ja tiukka naapurin löytäminen}
+\noindent\\
+Erityistapaus todentaja-aseman hyväksikäytöstä on, jos yllä olevassa kuvassa C on hyökkääjä ja se saa asetettua A:n ja B:n väliin viestejä välittävän \emph{piilotetun hyökkääjän}. A tällöin pyytää C:tä todentamaan, että B on tämän naapuri eikä välissä ole madonreikää. Hyökkääjälaite C vakuuttaa A:n ja B:n olevan naapureitaan ja piilotettu hyökkääjälaite näiden välissä pääsee suorittamaan jo aiemmin kuvattuja madonreikähyökkäyksen eri keinoja - esimerkiksi salakuuntelua.
+
+\noindent \\
+Tätä erityistapausta varten todentajalaitteen positiolle pitää asettaa tiukemmat rajat siten ettei todentaja saa olla kuuluvuusalueita yhdistävällä alueella. Tämä koko asia selvenee kirjoittajien kuvilla:
+
+\paragraph \\
+
+\begin{figure}[ht]
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=5cm]{verifier-loose}
+  \caption{Löyhällä paikkavaatimuksella}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=5cm]{verifier-strict}
+  \caption{Worawannotai-hyökkäyksen esteenä}
+  \label{fig:sub2}
+\end{subfigure}%
+\caption{Todentajalaitteen mahdolliset sijainnit}
+\label{fig:test}
+\end{figure}
 
 \section{Puhtaasti protokollapohjaiset puolustusmekanismit}
 Seuraavilla ratkaisuilla on laajempi käyttöpotentiaali, koska ne eivät vaadi erityislaitteistoa.
