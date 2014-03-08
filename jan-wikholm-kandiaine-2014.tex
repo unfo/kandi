@@ -378,18 +378,23 @@ Koska molemmissa esimerkeissä signaali kulkee maksimissaan valonnopeutta ei kok
 
 \paragraph{Protokollan eteneminen}
 \noindent \\
+\emph{Vaihe I}: Laite A aloittaa DelPHI-madonreikätunnistuksen lähettämällä DREQ-tietoliikennepaketin B:lle yleislähetyksenä. Koska paketti lähtee yleislähetyksenä, kaikki A:n naapurit kuulevat paketin ja tallentavat oman tunnisteensa paketin \emph{edellinen hyppy} -kenttään, kasvattavat hyppymäärälaskuria ja lähettävät sen yleislähetyksenä eteenpäin. Kun DREQ-paketti vihdoin saapuu B:lle, se lähettää vastauksena DREP-tietoliikennepaketin jokaista vastaanottamaansa DREQ-pakettia varten suoraan A:lle. Nämä DREP-paketit palaavat tulemaansa reittiä pitkin ja A saa tietää useita uniikkeja reittejä verkon läpi.
 
-\begin{enumerate}
-\item Broadcast ``reitti A--B'' kaikille naapureille rekursiivisesti
-\item Päivitetään ``edellinen noodi'' ja ``pituus'' kenttiä paketissa kun sitä reititetään eteenpäin
-\item B lähettää kaikki DelPHI-polunetsintäpaketit suoraan unicastina takaisin lähettäjälle
-\item A saa vastaukset ja analysoi pituudet vs aika/hypyt
-\item Jos kaksi aika/hypyt arvoa eroaa toisistaan raja-arvon $T$ verran => madonreikä
-\end{enumerate}
+\noindent \\
+\emph{Vaihe II}: Saatuaan vastaukset DREQ-pyyntöönsä laite A voi analysoida reittien pituuksien suhteita keskiarvoiseen hypyn viiveeseen. Mikäli näiden eri hyppyviiveiden välinen ero ylittää raja-arvon $T$, voi A olettaa madonreiän reitille. Kirjoittajien analyysin perusteella madonreikähyökkäyksen yhteydessä nämä hyppyviiveet jakautuvat kahteen ryhmään siten, että kahden ryhmän välillä oleva aikaero on aina suurempi kuin ryhmän sisäinen hajonta. 
+
+\noindent \\
+Esimerkkiarvoina tuolle raja-arvolle $T$ annetaan 1-5 millisekuntia. Arvon ollessa 1 ms tunnistuu osa (15--20\%) valideista reiteistä madonrei'iksi ja madonrei'istä tunnistetaan suurin osa (65--97\%). Raja-arvolla 5 ms väärien tunnistusten arvo on marginaalista (1--3\%) ja madonrei'istä tunnistetaan simulaatioverkon koosta riippuen noin 10--89\%. Simulaatioverkkojen koko vaikutti hyvin suuresti tunnistustarkkuuteen: raja-arvoilla 1--5 ms tunnistustarkkuus vaihteli pienemmässä verkossa 65--10,4\% ja kaksinkertaisen kokoisessa verkossa 97,6--89\%.
+
 
 \subsection{LiteWorp}
 
-Khalil et al esittelevät naapurilistoihin ja vartiointiin perustuvan LiteWorp-protokollan \cite{liteworp}
+Khalil et al esittelevät naapurilistoihin ja vartiointiin perustuvan LiteWorp-protokollan \cite{liteworp}. Protokollan oletuksina on verkon staattisuus -- laitteet eivät siis liiku -- ja laitteilla olevan parien välinen jaettu avain.
+
+\paragraph{Verkkoon liittyminen}
+\noindent \\
+
+
 
 \begin{itemize}
 \item vartijat
