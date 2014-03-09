@@ -35,6 +35,7 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{amsmath}
 
 
 % Automatically set the PDF metadata fields
@@ -149,6 +150,7 @@ Erityisen salakavalan hyökkäyksestä tekee se, että hyökkääjien ei tarvits
 \noindent \\
 Esittelemme luvussa 2 madonreikähyökkäysten hyökkääjä- \cite{delphi} ja hyökkäystyypit \cite{liteworp}, minkä jälkeen kerron laitteistoriippuvaisista puolustuskeinoista luvussa 3 ja protokollapohjaisista puolustuksista luvussa 4.
 
+
 \section{Hyökkääjä- ja hyökkäystyypit}
 
 Madonreikähyökkääjiä on kahta eri tyyppiä: \emph{piilotettu} ja \emph{avoin} \cite{delphi} ja hyökkäyksiä on viittä eri tyyppiä. \cite{liteworp}. Kaikkia hyökkäystyyppejä ei ole käsitelty kaikissa puolustuskeinoissa, joten käsittelemättömien hyökkäystyyppien torjumisen toimivuus on erinomainen kohde jatkotutkimukselle.
@@ -163,7 +165,7 @@ Esimerkiksi pakettihihnat, jotka esitellään luvussa ~\ref{packetleashes}, toim
 
 \subsection{Hyökkäystyypit}
 
-\paragraph{Erilliskaistahyökkäys} on se hyökkäystyyppi, johon yleisimmin viitataan nimellä \emph{madonreikähyökkäys}. Mikäli hyökkääjillä on normaalin lähetyskaistan - esimerksi wlan-verkkon - lisäksi käytössä vaikkapa yksinkertaisesti kytketty ethernetverkko, voivat ne kommunikoida yleistä verkkoa nopeammin ja sen kantamaa pidemmälle. Tämä sotkee reititysprotokollia ja suuri osa paketeista päätyy kulkemaan hyökkääjien linkin läpi.
+\paragraph{Erilliskaistahyökkäys} on se hyökkäystyyppi, johon yleisimmin viitataan nimellä \emph{madonreikähyökkäys}. Mikäli hyökkääjillä on normaalin lähetyskaistan - esimerkiksi wlan-verkkon - lisäksi käytössä vaikkapa yksinkertaisesti kytketty ethernetverkko, voivat ne kommunikoida yleistä verkkoa nopeammin ja sen kantamaa pidemmälle. Tämä sotkee reititysprotokollia ja suuri osa paketeista päätyy kulkemaan hyökkääjien linkin läpi.
 
 \paragraph{Pakettikapseloinnissa} hyökkääjät H1 ja H2 voivat käyttää jo olemassa olevaa verkkoa: H1 kuulee paketin ja luo uuden H2:lle suunnatun paketin, jonka sisältönä on sellaisenaan H1:n kaappaama paketti. Kun tämä kapseloitu paketti saavuttaa H2:n se toistaa alkuperäisen sisällön sellaisenaan verkkoon, joten sen naapurit luulevat H1:n naapureiden olevan lähellä. Tämä ei vaadi hyökkääjien osalta mitään muista verkon laitteista poikkeavia resursseja.
 
@@ -232,7 +234,7 @@ Nämä osat tulevat tarkasti tässä järjestyksessä. Koska avainta ei ole vies
 Resurssien niukkuuteen kirjoittajat mainitsevat pääratkaisuna symmetrisen kryptografian käyttö asymmetrisen sijaan – operaatioiden nopeuserot voivat olla kolmesta neljään suuruusluokkaa (100--1000-kertaisia) hitaampia jälkimmäisessä.
 
 \noindent \\
-TIK-protokollaa arvioidessaan kirjoittajat tarkastelivat vuoden 2001 mobiililaitteiden laskentatehoa ja muistimäärää. He toteavat protokollan laskenta- ja muistivaatimukset mahdollisiksi saatavilla olevilla laitteilla; joskin huomauttavat ettei TIK sovi resursseiltaan aivan kaikkein rajallisimpiin laitteisiin, joista esimerkiksi sensoriverkot muodostuvat.
+TIK-protokollaa arvioidessaan kirjoittajat tarkastelivat vuoden 2001 mobiililaitteiden laskentatehoa ja muistimäärää. He toteavat silloisten laitteiden kykenevän täyttävän protokollan laskenta- ja muistivaatimukset. He huomauttavat ettei TIK sovi resursseiltaan aivan kaikkein rajallisimpiin laitteisiin, joista esimerkiksi sensoriverkot muodostuvat.
 
 \noindent \\
 Allekirjoitusta varten muodostettavan tiivistepuun muodostusta ja tallennusta voi optimoida siten että vain osa puusta säilötään muistissa ja osa lasketaan tarvittaessa. Tällaisen optimoinnin takia yhden vuorokauden yksityiset avaimet sisältävä osittainen puu saadaan mahtumaan 2,5 megatavuun kokonaisen puun 170 gigatavun sijaan.
@@ -248,10 +250,10 @@ Protokolla perustuu naapurilistoihin ja niiden ylläpitoon. Protokolla olettaa, 
 Kun laite A haluaa liittyä verkkoon, se käy läpi jokaisen suunta-antenninsa sektoreista ja lähettää siihen suuntaan yleisen liittymisviestin, joka sisältää A:n oman tunnisteen sekä tiedon ko. sektorin numerosta. Tämä sektori on suunnattu kaikilla laitteilla samaan suuntaan. Kun laite B vastaanottaa A:n viestin omalla sektorillaan X se ensimmäisenä tarkistaa, että A:n ilmoitettu sektori on X:stä vastakkainen. Mikäli sektori ei ole vastakkaisella puolella, kalibrointivirheen takia tai muusta syystä, pudottaa vastaanottaja paketin ja ei vastaa siihen.
 
 \noindent\\
-Mikäli A:n pakeetti on oikeellinen, B lähettää A:lle A:n tunnisteen salattuna näiden yhteisellä jaetulla avaimella sekä oman tunnisteensa. Jos B:n vastaus tulee A:n lähetyssektorin suunnalta ja että B on ilmoittanut vastakkaisen sektorin omaksi lähetyssektorikseen sekä A onnistuu purkamaan B:n vastauksen ja saamaan vastaukseksi oman tunnisteensa se lisää B:n tunnisteen omaan naapurilistaansa. Tässä vaiheessa A ei ole välttämättä vielä B:n naapurilistalla vaan B hoitaa oman naapurien löytöyrityksen itse valitsemanaan satunnaisena ajankohtana.
+Mikäli A:n paketti on oikeellinen, B lähettää A:lle A:n tunnisteen salattuna näiden yhteisellä jaetulla avaimella sekä oman tunnisteensa. Jos B:n vastaus tulee A:n lähetyssektorin suunnalta ja että B on ilmoittanut vastakkaisen sektorin omaksi lähetyssektorikseen sekä A onnistuu purkamaan B:n vastauksen ja saamaan vastaukseksi oman tunnisteensa se lisää B:n tunnisteen omaan naapurilistaansa. Tässä vaiheessa A ei ole välttämättä vielä B:n naapurilistalla vaan B hoitaa oman naapurien löytöyrityksen itse valitsemanaan satunnaisena ajankohtana.
 
 \noindent\\
-Tämä yksinkertainen naapurietsintä ei vielä estä madonreikiä. Esimerkiksi seuraavanlainen lineaarinen tapaus on edelleen mahdollinen:
+Tämä yksinkertainen naapurietsintä ei vielä estä madonreikiä. Esimerkiksi alla oleva lineaarinen tapaus on edelleen mahdollinen:
 
 \noindent\\
 $A -> M1 ------> M2 -> B$
@@ -286,7 +288,7 @@ Mikäli B on C:n naapuri ja se on eri sektorilla C:lle kuin A:lle niin A voi luo
 Erityistapaus todentaja-aseman hyväksikäytöstä on, jos yllä olevassa kuvassa A ja B eivät oikeasti kuule toisiaan ja C on hyökkääjä ja se saa asetettua A:n ja B:n väliin viestejä välittävän \emph{piilotetun hyökkääjän}. A tällöin pyytää C:tä todentamaan, että B on tämän naapuri eikä välissä ole madonreikää. Hyökkääjälaite C vakuuttaa A:n ja B:n olevan naapureitaan ja piilotettu hyökkääjälaite näiden välissä pääsee suorittamaan jo aiemmin kuvattuja madonreikähyökkäyksen eri keinoja - esimerkiksi salakuuntelua.
 
 \noindent \\
-Tätä erityistapausta varten todentajalaitteen sijainnille pitää asettaa tiukemmat rajat siten ettei todentaja saa olla kuuluvuusalueita yhdistävällä alueella. Tämä koko asia selvenee kirjoittajien kuvilla:
+Tätä erityistapausta varten todentajalaitteen sijainnille pitää asettaa tiukemmat rajat siten ettei todentaja saa olla kuuluvuusalueita yhdistävällä alueella.
 
 \paragraph \\
 
@@ -307,7 +309,7 @@ Tätä erityistapausta varten todentajalaitteen sijainnille pitää asettaa tiuk
 \label{fig:test}
 \end{figure}
 
-
+\newpage
 
 \section{Puhtaasti protokollapohjaiset puolustukset}
 Seuraavilla ratkaisuilla on laajempi käyttöpotentiaali, koska ne eivät vaadi erityislaitteistoa.
@@ -318,17 +320,17 @@ Hayajneh et al kuvailevat DeWorm-protokollan \cite{deworm}, jonka mainitaan erit
 
 \paragraph{Perusajatus}
 \noindent \\
-Kun laite A haluaa selvittää onko sen ja laitteen B välissä madonreikä, se aloittaa DeWorm-protokollan mukaisen vaihtoehtoisen reittihaun: jokaiselle noodille polulla A--B katsotaan, että sitä seuraavasta seuraavaan noodiin vievän reitin pisimmän ja lyhyimmän siirtymän pituuksien erotus ei ole raja-arvoa $n$ suurempi. 
+Kun laite A haluaa selvittää onko sen ja laitteen B välissä madonreikä, se aloittaa DeWorm-protokollan mukaisen vaihtoehtoisen reittihaun: jokaiselle noodille polulla A--B katsotaan, että sitä seuraavasta seuraavaan noodiin vievän reitin pisimmän ja lyhimmän siirtymän pituuksien erotus ei ole raja-arvoa $n$ suurempi. 
 
 \noindent \\
-Esimerkki: A--B väli on kokonaisuudessaan A-1-2-3-4-B. A pyytää kaikilta naapureiltaan löytämään reitin noodiin 2 siten että reitti ei kulje nykyisen reitin kautta eli noodin 1 läpi. Reitti A--2 on kahden hypyn pituinen; jos löytyy yksi tai useampi reitti, jonka pituus on $2 + n$ tai enemmän, A olettaa välillä A--2 olevan madonreikä. Mikäli madonreikää ei löydy, seuraavaksi tarkistetaan 1--3 ja taas pyydetään 1:n naapureita löytämään reitti 3:een kulkematta noodin 2 kautta. Tätä jatketaan kunnes erikoistapauksena käsitellään toiseksi viimeinen noodi (4), joka pyytää kaikkia naapureitaan löytämään reitin B:hen kulkematta itsensä läpi. Mikäli missään vaiheessa ei ole löytynyt raja-arvoa $n$ suurempia poikkeampia reittien pituuksissa, voi A olla varma ettei matkalla ole madonreikää.
+Esimerkki: A--B väli on kokonaisuudessaan A-1-2-3-4-B. A pyytää kaikilta naapureiltaan löytämään reitin noodiin 2 siten että reitti ei kulje nykyisen reitin kautta eli noodin 1 läpi. Reitti A--2 on kahden hypyn pituinen; jos löytyy yksi tai useampi reitti, jonka pituus on $2 + n$ tai enemmän, A olettaa välillä A--2 olevan madonreikä. Mikäli madonreikää ei löydy, seuraavaksi tarkistetaan 1--3 ja taas pyydetään 1:n naapureita löytämään reitti 3:een kulkematta noodin 2 kautta. Tätä jatketaan kunnes erikoistapauksena käsitellään toiseksi viimeinen noodi (4), joka pyytää kaikkia naapureitaan löytämään reitin B:hen kulkematta itsensä läpi. Mikäli missään vaiheessa ei ole löytynyt raja-arvoa $n$ suurempia poikkeamia reittien pituuksissa, voi A olla varma ettei matkalla ole madonreikää.
 
 \paragraph{Ongelmat}
 \noindent \\
 Raja-arvon $n$ valinta kriittistä, jotta voidaan tasapainotella virheellisten tunnistusten ja tunnistamatta jättämisen välillä. Kirjoittajien simulointien perusteella he suosittelevat $n$ arvoksi 2--3.
 
 \noindent \\
-Toinen ongelma on niin sanotut kriittiset solmut, eli laitteet jotka legitiimisti yhdistävät kaksi verkkoa ainoana solmukohtana. Tällainen solmukohta näyttää DeWorm-protokollan silmin madonreiältä ja siksi verkon pitää pystyä ottamaan tällainen huomioon esimerkiksi antamalla kriittiselle solmulle ja sen naapureille erivapauden DeWorm-protollan ohitukseen. Tällainen erivapaus on mahdollista sallia, koska DeWorm-protokolla on suunniteltu ja testattu liikkumattomiin verkkoihin, joissa verkon muoto on tiedossa etukäteen.
+Toinen ongelma on niin sanotut kriittiset solmut, eli laitteet jotka legitiimisti yhdistävät kaksi verkkoa ainoana solmukohtana. Tällainen solmukohta näyttää DeWorm-protokollan silmin madonreiältä ja siksi verkon pitää pystyä ottamaan tällainen huomioon esimerkiksi antamalla kriittiselle solmulle ja sen naapureille erivapauden DeWorm-protokollan ohitukseen. Tällainen erivapaus on mahdollista sallia, koska DeWorm-protokolla on suunniteltu ja testattu liikkumattomiin verkkoihin, joissa verkon muoto on tiedossa etukäteen.
 
 \noindent \\
 Viimeisimpänä ongelmana on protokollan suuri liikennemäärä: jokainen verkon noodi voi päätyä tarkistamaan madonreikien olemassaolon jokaiseen noodiin, jonka kanssa se on yhteydessä. Kirjoittajat eivät kuitenkaan kuvaile, miten laitteen pitäisi päättää aloittaa DeWorm-protokollatarkistus.
@@ -371,7 +373,7 @@ Pituus A--E: 4 hyppyä. Aikaa kuluu $T_1$.
 \end{tikzpicture}
 
 \noindent \\
-Pituus: 1 hyppy jos M1 ja M2 ovat \emph{piilotettuja hyökkääjiä}. Aikaa kuluu: $T_2$.
+Pituus A--E: 1 hyppy M1 ja M2 ollessa \emph{piilotettuja hyökkääjiä}. Aikaa kuluu: $T_2$.
 
 \noindent \\
 Koska molemmissa esimerkeissä signaali kulkee maksimissaan valonnopeutta ei kokonaisaika todennäköisesti ole kovin paljon erilainen, eli $T_1 \approx T_2$ ja täten $(T_1 / 4) < (T_2 / 1)$ vaikka tämä reitti olisi pituutensa puolesta muuten parempi.
@@ -384,7 +386,7 @@ Koska molemmissa esimerkeissä signaali kulkee maksimissaan valonnopeutta ei kok
 \emph{Vaihe II}: Saatuaan vastaukset DREQ-pyyntöönsä laite A voi analysoida reittien pituuksien suhteita keskiarvoiseen hypyn viiveeseen. Mikäli näiden eri hyppyviiveiden välinen ero ylittää raja-arvon $T$, voi A olettaa madonreiän reitille. Kirjoittajien analyysin perusteella madonreikähyökkäyksen yhteydessä nämä hyppyviiveet jakautuvat kahteen ryhmään siten, että kahden ryhmän välillä oleva aikaero on aina suurempi kuin ryhmän sisäinen hajonta. 
 
 \noindent \\
-Esimerkkiarvoina tuolle raja-arvolle $T$ annetaan 1-5 millisekuntia. Arvon ollessa 1 ms tunnistuu osa (15--20\%) valideista reiteistä madonrei'iksi ja madonrei'istä tunnistetaan suurin osa (65--97\%). Raja-arvolla 5 ms väärien tunnistusten arvo on marginaalista (1--3\%) ja madonrei'istä tunnistetaan simulaatioverkon koosta riippuen noin 10--89\%. Simulaatioverkkojen koko vaikutti hyvin suuresti tunnistustarkkuuteen: raja-arvoilla 1--5 ms tunnistustarkkuus vaihteli pienemmässä verkossa 65--10,4\% ja kaksinkertaisen kokoisessa verkossa 97,6--89\%.
+Esimerkkiarvoina tuolle raja-arvolle $T$ annetaan 1-5 millisekuntia. Arvon ollessa 1 ms tunnistuu osa (15--20\%) valideista reiteistä madonrei'iksi ja madonrei'istä tunnistetaan suurin osa (65--97\%). Raja-arvolla 5 ms väärien tunnistusten arvo on marginaalista (1--3\%) ja madonrei'istä tunnistetaan simulaatioverkon koosta riippuen noin 10--89\%. Simulaatioverkkojen koko vaikutti merkitsevästi tunnistustarkkuuteen: raja-arvoilla 1--5 ms tunnistustarkkuus vaihteli pienemmässä verkossa 65--10,4\% ja kaksinkertaisen kokoisessa verkossa 97,6--89\%.
 
 
 \subsection{LiteWorp}
@@ -393,15 +395,51 @@ Khalil et al esittelevät naapurilistoihin ja vartiointiin perustuvan LiteWorp-p
 
 \paragraph{Verkkoon liittyminen}
 \noindent \\
+A:n liittyessä verkkoon se lähettää yleislähetyksenä tiedon olemassaolostaan. Kaikki viestin kuulijat vastaavat A:lle todentaen vastauksensa heidän yhteisellä jaetulla avaimellaan. A lisää kaikki todennetun vastauksen lähettäneet laitteet naapurilistaansa, $R_A$. Kun A:n yleislähetyksen aikaraja on mennyt, se lähettää kaikille naapureilleen oman naapurilistansa todentaen viestinsä jokaiselle erikseen jaetulla avaimella. Täten liittymisen yhteydessä A tietää naapurinsa ja A:n naapurit tietävät kaikki A:n naapurit.
+
+\paragraph{Paikallinen valvonta}
+\noindent \\
+Koko protokollaan perusajatuksena on, että kaikki laitteet vartioivat kaikkea kuulemaansa liikennettä. Mikäli laite C saa laitteelta B paketin, jonka B sanoo tulevan A:lta mutta C:n tietojen mukaan A ei ole B:n naapuri, C hylkää paketin ja kohottaa B:n paha-aikeisuuslaskuria $Mal_B$ jonkin ennalta määrätyn \emph{tekaisulisäyksen} verran.
+
+\noindent \\
+Toinen rike, jota verkossa olevat laitteet valvovat, on pakettien tahallinen pudottaminen. Tätä varten jokainen verkon laite pitää jokaista kuulemaansa naapuria varten erillistä vahtilistaa paketeista, jotka naapurin olisi tarkoitus lähettää eteenpäin. 
+
+\noindent \\
+Alla olevan kuvaa esimerkkinä käyttäen M1:n saadessa paketin A:lta B:lle tekee laite C omaan vahtilistaansa merkinnän tästä paketista ja odottaa hetken verran että M1 lähettää paketin normaalisti eteenpäin B:n suuntaan. Mikäli C ei havaitse M1:n lähettäneen sille tullutta välitettäväksi tarkoitettua pakettia eteenpäin, korottaa C nyt $Mal_{M1}$-paha-aikeisuuslaskuria \emph{pudotuslisäyksen} verran.
+
+\noindent\\
+\begin{tikzpicture}
+  [scale=.8,auto=left,every node/.style={circle,fill=gray!20}]
+  \node (A) at (4,7)  {A};
+  \node (B) at (8,7) {B};
+  \node (C) at (6,9)  {C};
+  \node (M1) at (6,7)  {M1};
+
+  \foreach \from/\to in {A/M1,M1/B,A/C,B/C}
+    \draw (\from) -- (\to);
+
+\end{tikzpicture}
+
+\paragraph{Eristäminen}
+\noindent \\
+Kun C on havainnut raja-arvon, $C_t$, verran rikkeitä M1 toimesta, se poistaa M1:n omalta naapurilistaltaan ja lähettää kaikille M1 naapureille tiedon siitä, että epäilee M1:stä paha-aikeiseksi laitteeksi. Kaikki M1:n naapurit tarkistavat, että C on ollut M1:n vartija, ja merkkaavat C:n omaan varoituspuskuriinsa M1:n suhteen. Laitteen saadessa luottamusrajan, $\gamma$, ylittävän määrän varoituksia M1:stä se poistaa M1:n omalta naapurilistaltaan. Tämän luottamusrajan asettaminen liian alhaiseksi voi luoda tilanteen, jossa verkon normaalit laitteet voivat joutua väärin leimatuksi ja verkosta hylätyksi. Liian korkea luottamusraja voi johtaa paha-aikeisten laitteiden huomaamatta jäämiseen. Nämä varoitukset ovat tosiaan kumulatiivisia eikä niissä ole aikarajaa.
+
+\paragraph{Analyysia toimivuudesta}
+\noindent \\
+Yksi tämän protokollan toimintavarmuuteen vaikuttavista tekijöistä on verkkotason pakettitörmäykset. Törmäyksistä voi aiheutua se, että vartijalaite ei havaitse vartioimalleen laitteelle tullutta välitettävää pakettia ja laitteen vartioitavan lähetettäessä tämän paketin normaalisti eteenpäin vartijalaite katsoo tämän tekaisseen paketin. Vaihtoehtoisesti pakettitörmäys voi peittää vartijalta näkyvyyden paketin oikeaan edelleenvälitykseen ja täten viattoman laitteen paha-aikeisuuslaskuria kohotetaan \emph{pudotuslisäyksellä} vaikka se oikeasti lähetti paketin.
+
+\noindent \\
+Kirjoittajien analyysin perusteella todennäköisyys madonreiän tunnistamiselle verkossa riippuu naapureiden määrästä. Alle 7 naapurin verkoissa protokolla ei toimi, mutta 7 naapurilla todennäköisyys madonreiän tunnistamiseen on noin 90\% ja se kohoaa 100\%:iin jo 11 naapurilla. Yhteentörmäysten takia protokollan teho alkaa heikentyä liian täydessä verkossa: yli 20 naapurin verkoissa todennäköisyys tunnistuksella putoaa lähes lineaarisesti siten että 35 naapurin verkossa todennäköisyys on enää noin 40\%.
+
+\noindent \\
+Vaikka väärien tunnistusten mahdollisuus on jo tuotu esille, ei se todellisuudessa kirjoittajien mukaan ole kovin suuri uhka. Pahimmillaan todennäköisyys legitiimin laitteen väärään tunnistukseen paha-aikeisena 23 naapurin verkossa on 0,00003\%.
+
+\section{Yhteenveto}
+
+Madonreikähyökkäys on erittäin vakava uhka langattomissa ad hoc -verkoissa. Siitä tekee erityisen kavalan se, ettei hyökkääjien tarvitse murtaa minkäänlaista salausta vaan ne voivat saada haittaa aikaan puhtaasti verkkokerroksella paketteja kopioiden verkon osien välillä. Tästä seuraa se, että suuri osa puolustuskeinoista perustuu arvioimaan toimivatko muut laitteet ja verkkopolut joidenkin ennalta asetettujen raja-arvojen puitteissa. Nämä raja-arvot päättävät sen löytyykö verkosta kaikkien hyökkääjänoodien lisäksi myös viattomia laitteita väärin tunnistettuina vai jääkö osa hyökkääjistä epäilyttä.
 
 
 
-\begin{itemize}
-\item vartijat
-\item väärät syytökset vs verkkopakettien törmäilyt
-\item vahtilistojen ja -puskurien tilavaativuudet
-\item protokollan heikkeneminen tiheissä verkoissa (naapuri-lkm >20)
-\end{itemize}
 
 % --- References ---
 %
