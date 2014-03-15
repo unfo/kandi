@@ -148,7 +148,7 @@ Madonreikähyökkäyksessä yleensä kaksi tai useampi paha-aikeista tahoa toimi
 Erityisen salakavalan hyökkäyksestä tekee se, että hyökkääjien ei tarvitse murtaa mitään salausta koska koko hyökkäys perustuu pakettien kopiointiin (salakuunteluun ja sen jälkeiseen toistoon) verkon osasta toiseen.
 
 \noindent \\
-Esittelemme luvussa 2 madonreikähyökkäysten hyökkääjä- \cite{delphi} ja hyökkäystyypit \cite{liteworp}, minkä jälkeen kerron laitteistoriippuvaisista puolustuskeinoista luvussa 3 ja protokollapohjaisista puolustuksista luvussa 4.
+Esittelemme luvussa 2 madonreikähyökkäysten hyökkääjä- \cite{delphi} ja hyökkäystyypit \cite{liteworp}, minkä jälkeen kerromme laitteistoriippuvaisista puolustuskeinoista luvussa 3 ja protokollapohjaisista puolustuksista luvussa 4.
 
 
 \section{Hyökkääjä- ja hyökkäystyypit}
@@ -167,13 +167,13 @@ Esimerkiksi pakettihihnat, jotka esitellään luvussa ~\ref{packetleashes}, toim
 
 \paragraph{Erilliskaistahyökkäys} on se hyökkäystyyppi, johon yleisimmin viitataan nimellä \emph{madonreikähyökkäys}. Mikäli hyökkääjillä on normaalin lähetyskaistan - esimerkiksi wlan-verkkon - lisäksi käytössä vaikkapa yksinkertaisesti kytketty ethernetverkko, voivat ne kommunikoida yleistä verkkoa nopeammin ja sen kantamaa pidemmälle. Tämä sotkee reititysprotokollia ja suuri osa paketeista päätyy kulkemaan hyökkääjien linkin läpi.
 
-\paragraph{Pakettikapseloinnissa} hyökkääjät H1 ja H2 voivat käyttää jo olemassa olevaa verkkoa: H1 kuulee paketin ja luo uuden H2:lle suunnatun paketin, jonka sisältönä on sellaisenaan H1:n kaappaama paketti. Kun tämä kapseloitu paketti saavuttaa H2:n se toistaa alkuperäisen sisällön sellaisenaan verkkoon, joten sen naapurit luulevat H1:n naapureiden olevan lähellä. Tämä ei vaadi hyökkääjien osalta mitään muista verkon laitteista poikkeavia resursseja.
+\paragraph{Pakettikapseloinnissa} hyökkääjät H1 ja H2 voivat käyttää jo olemassa olevaa verkkoa: H1 kuulee paketin ja luo uuden H2:lle suunnatun paketin, jonka sisältönä on sellaisenaan H1:n kaappaama paketti. Kun tämä kapseloitu paketti saavuttaa H2:n, se toistaa alkuperäisen sisällön sellaisenaan verkkoon, joten sen naapurit luulevat H1:n naapureiden olevan lähellä. Tämä ei vaadi hyökkääjien osalta mitään muista verkon laitteista poikkeavia resursseja.
 
 \paragraph{Suurteholähetys} on malliesimerkki siitä, että hyökkääjille voi olettaa loputtomat resurssit toisin kuin muille verkon laitteille, joita nimenomaan yleensä yhdistää resurssien vähyys. Tässä hyökkäystyypissä hyökkääjälaite lähettää kaappaamansa reitityspaketit huomattavan suurella lähetysteholla ja täten saa aikaan sen itsensä lävitse kulkevan lyhimmän reitin. Tämä hyökkäys ei siis vaadi kahta osapuolta.
 
 \paragraph{Pakettivälitys} -- kuten suurteholähetys -- ei vaadi hyökkääjäparia vaan sen voi suorittaa yksikin vihamielinen laite. Tässä hyökkääjä on kahden laitteen välissä välittäen paketteja jolloin nämä laitteet luulevat olevansa naapureita ja hyökkääjä niiden välissä voi suorittaa esimerkiksi salakuuntelua tai palvelunestohyökkäystä.
 
-\paragraph{Protokollapoikkeamat} ovat paha-aikeisten laitteiden tahallista verkkoprotokollan rikkomista: esimerkiksi pakettitörmäysten estämiseksi tietyt protokollat vaativat reitityspakettien lähetyksessä pientä viivettä - paha-aikeinen laite voi täten lähettää paketit heti ja aiheuttaa tavallisille laitteille haittaa törmäyksillä. Toinen vaihtoehto on reitityspakettien lähettämättä jättäminen jolloin verkon reititys ja polunetsintä eivät toimi oikein. Kummassakin tapauksessa hyökkääjä voi junailla toimensa siten, että suuri osa verkon liikenteestä päätyy reitittymään sen läpi.
+\paragraph{Protokollapoikkeamat} ovat paha-aikeisten laitteiden tahallista verkkoprotokollan rikkomista: esimerkiksi pakettitörmäysten estämiseksi tietyt protokollat vaativat reitityspakettien lähetyksessä pientä viivettä - paha-aikeinen laite voi täten lähettää paketit heti ja aiheuttaa tavallisille laitteille haittaa törmäyksillä. Toinen vaihtoehto on reitityspakettien lähettämättä jättäminen, jolloin verkon reititys ja polunetsintä eivät toimi oikein. Kummassakin tapauksessa hyökkääjä voi junailla toimensa siten, että suuri osa verkon liikenteestä päätyy reitittymään sen läpi.
 
 \section{Laitteistoriippuvaiset puolustusmekanismit}
 
@@ -181,7 +181,7 @@ Alla kuvatut puolustusmekanismit eivät vaadi reititysprotokolliin muutoksia, mu
 
 \subsection{Pakettihihnat ja TIK-protokolla}
 \label{packetleashes}
-Yih-Chun Hu et al \cite{leashes} kuvailevat uuden mekanismin - \emph{pakettihihnat} (packet leashes) - ja sen kaksi eri varianttia: \emph{aikahihnan} (temporal leash) ja \emph{geohihnan} (geographic leash). Tässä hihnalla tarkoitetaan sellaista dataa, jolla paketin enimmäiskantamaa voidaan rajoittaa.
+Yih-Chun Hu et al \cite{leashes} kuvailevat uuden mekanismin - \emph{pakettihihnat} (packet leashes) - ja sen kaksi eri varianttia: \emph{aikahihnan} (temporal leash) ja \emph{geohihnan} (geographic leash). Tässä hihnalla tarkoitetaan sellaista tietoa, jolla paketin enimmäiskantamaa voidaan rajoittaa. Tällaista tietoa ovat esimerkiksi paketin vanhenemista ilmaiseva aikaleima tai lähettäjän paikkatiedon ja paketin maksimietäisyyden yhdistelmä.
 
 \noindent \\
 Pakettihihnojen lisäksi he luovat uuden TIK-verkkoprotokollan, joka käyttää aikahihnoja madonreikiä vastaan.
@@ -191,10 +191,10 @@ Pakettihihnojen lisäksi he luovat uuden TIK-verkkoprotokollan, joka käyttää 
 Aikahihnojen edellytyksenä on tarkka kellojen synkronointitarkkuus: muutaman mikrosekunnin tai jopa satojen nanosekuntien tarkkuus. Kaikkien laitteiden pitää myöskin olla tietoisia virhemarginaalin suuruusluokasta kahden laitteen välillä. Tällainen synkronointitarkkuus onnistuu esimerkiksi GPS:n avulla. Vaikka tarkkuusvaatimus on erittäin tiukka, on se kirjoittajien mukaan täysin hyväksyttävä ottaen huomioon madonreikähyökkäyksen vakavuuden.
 
 \noindent \\
-Aikahihnaa muodostaessa lähettäjä päättää enimmäispituuden lähetykselle ja laskee synkronoinnin virhemarginaalin huomioiden, kauanko valonnopeudella kulkevalla radiosignaalilla kestää sinne päätyä. Tämän avulla lähettäjä asettaa paketille vanhenemisajan, jonka jälkeen paketti on hylättävä. Viestien tunnelointi aiheuttaa pakosti viivettä niiden kulkiessa fyysisesti kauemmaksi joten madonreiän toisella puolella olevat laitteet pudottavat vanhentuneet paketit.
+Aikahihnaa muodostaessa lähettäjä päättää enimmäispituuden lähetykselle ja laskee synkronoinnin virhemarginaalin huomioiden, kauanko valonnopeudella kulkevalla radiosignaalilla kestää sinne päätyä. Tämän avulla lähettäjä asettaa paketille vanhenemisajan, jonka jälkeen paketti on hylättävä. Viestien tunnelointi aiheuttaa viivettä niiden kulkiessa fyysisesti kauemmaksi. Tämän viiveen takia viesti ehtii vanhentua ja madonreiän toisella puolella olevat laitteet hylkäävät sen.
 
 \noindent \\
-Vaikka aikahihna on hihnatyypeistä tarkempi on sen haasteena se, ettei lähettäjä tiedä aina tarkalleen omaa lähetysaikaansa, koska fyysisen kerroksen lähetysmekanismi voi joutua odottamaan vuoroaan. Täten on vaikeaa etukäteen luoda lähetysajankohtaan perustuvaa digitaalista allekirjoitusta. Tämän kirjoittajat ovat ratkaisseet kohta esiteltävässä TIK-protokollassa.
+Vaikka aikahihna on hihnatyypeistä tarkempi, on sen haasteena se, ettei lähettäjä tiedä aina tarkalleen omaa lähetysaikaansa, koska fyysisen kerroksen lähetysmekanismi voi joutua odottamaan vuoroaan. Täten on vaikeaa etukäteen luoda lähetysajankohtaan perustuvaa digitaalista allekirjoitusta. Tämän kirjoittajat ovat ratkaisseet kohta esiteltävässä TIK-protokollassa.
 
 \paragraph{Geohihnat}
 \noindent \\
@@ -204,7 +204,7 @@ Geohihnoja käytettäessä kaikkien verkon laitteiden pitää tietää oma sijai
 Geohihnan toiminta on hyvin yksinkertainen: laite tarkistaa onko sen oma sijainti alkuperäisessä paketissa määritellyn sallitun matkan päässä. Koska paketit allekirjoitetaan digitaalisesti, voi laite luottaa paikannustiedon olevan alkuperäiseltä lähteeltä. Toisin kuin pelkkä matkan pituuteen perustuva tarkistus geohihnat toimivat myös siinä tilanteessa, että madonreikä kuljettaa paketin jonkin esteen ohi.
 
 \noindent \\
-Geohihnoissa laitteet tietävät toistensa oletetun maksimiliikenopeuden ja täten madonreikätunneloitu paketti voidaan tunnistaa ilkivaltaisen laitteen lähettämäksi, jos se lähettää verkkoon kaksi pakettia joiden lokaatiotiedoissa on tapahtunut maksimiliikenopeutta nopeampaa liikettä edellyttävä muutos.
+Geohihnoissa laitteet tietävät toistensa oletetun maksimiliikenopeuden, ja täten madonreikätunneloitu paketti voidaan tunnistaa ilkivaltaisen laitteen lähettämäksi, jos se lähettää verkkoon kaksi pakettia, joiden lokaatiotiedoissa on tapahtunut maksimiliikenopeutta nopeampaa liikettä edellyttävä muutos.
 
 \paragraph{TIK-protokolla} 
 \noindent \\
@@ -227,17 +227,17 @@ Vastaanottaja tietää jo etukäteen lähettäjän julkisen avaimen, eli Merkle-
 \end{enumerate}
 
 \noindent \\
-Nämä osat tulevat tarkasti tässä järjestyksessä. Koska avainta ei ole viestin tiivistelaskennan aikaan vielä lähetetty, vastaanottaja voi nyt olla varma, ettei kukaan ole voinut väärentää tiivistettä. Vastaanottajan tarkistettua viestin aitouden se tarkistaa vielä aikahihnan rajat ja katsoo, onko paketti voimassa.
+Nämä osat tulevat tarkasti tässä järjestyksessä. Koska avainta ei ole viestin tiivistelaskennan aikaan vielä lähetetty, vastaanottaja voi nyt olla varma, ettei kukaan ole voinut väärentää tiivistettä. Vastaanottajan tarkistettua viestin aitouden se tarkistaa vielä aikahihnan rajat ja laskee, onko paketti vanhentunut.
 
 \paragraph{Resurssivaativuus} 
 \noindent \\
-Resurssien niukkuuteen kirjoittajat mainitsevat pääratkaisuna symmetrisen kryptografian käyttö asymmetrisen sijaan – operaatioiden nopeuserot voivat olla kolmesta neljään suuruusluokkaa (100--1000-kertaisia) hitaampia jälkimmäisessä.
+Resurssien niukkuuteen kirjoittajat mainitsevat pääratkaisuna symmetrisen kryptografian käytön asymmetrisen sijaan. Asymmetrisessa kryptografiassa operaatiot voivat olla kolmesta neljään suuruusluokkaa hitaampia (100--1000-kertaisia).
 
 \noindent \\
-TIK-protokollaa arvioidessaan kirjoittajat tarkastelivat vuoden 2001 mobiililaitteiden laskentatehoa ja muistimäärää. He toteavat silloisten laitteiden kykenevän täyttävän protokollan laskenta- ja muistivaatimukset. He huomauttavat ettei TIK sovi resursseiltaan aivan kaikkein rajallisimpiin laitteisiin, joista esimerkiksi sensoriverkot muodostuvat.
+TIK-protokollaa arvioidessaan kirjoittajat tarkastelivat silloisten -- vuoden 2001 -- mobiililaitteiden laskentatehoa ja muistimäärää. He toteavat laitteiden täyttävän protokollan laskenta- ja muistivaatimukset. He huomauttavat, ettei TIK sovi resursseiltaan aivan kaikkein rajallisimpiin ympäristöihin kuten sensoriverkkoihin.
 
 \noindent \\
-Allekirjoitusta varten muodostettavan tiivistepuun muodostusta ja tallennusta voi optimoida siten että vain osa puusta säilötään muistissa ja osa lasketaan tarvittaessa. Tällaisen optimoinnin takia yhden vuorokauden yksityiset avaimet sisältävä osittainen puu saadaan mahtumaan 2,5 megatavuun kokonaisen puun 170 gigatavun sijaan.
+Allekirjoitusta varten muodostettavan tiivistepuun muodostusta ja tallennusta voidaan optimoida säilömällä vain osa puusta muistissa ja laskemalla loput tarvittaessa. Tällaisen optimoinnin takia yhden vuorokauden yksityiset avaimet sisältävä osittainen puu saadaan mahtumaan 2,5 megatavuun kokonaisen puun 170 gigatavun sijaan.
 
 \subsection{Suunta-antenni}
 Lingxuan Hu ja David Evans kuvaavat suunta-antennin käyttöä madonreikien estämisessä \cite{antenna}. Suunta-antenneja on kahdentyyppisiä: ohjattuja ja kytkettyjä. Ohjatut suunta-antennit tarjoavat tarkempaa suuntausta, mutta ne ovat yleensä liian kalliita sensoriverkkoihin. Kytketty suunta-antenni pitää sisällään useamman staattisesti suunnatun antennin, jotka muodostavat yhtä suurista lähetyssektoreista 360 asteen kattavuuden. Näitä antenneja kytketään päälle tarvittaessa, kun halutaan tiettyyn suuntaan lähettää. Suuntauksessa käytetään laitteen sisäistä kompassia sektorin numero yksi osoittaessa aina itään.
