@@ -340,7 +340,55 @@ Kolme osapuolta:
 
 \begin{itemize}
 \item Molemminpuoleinen todennus aikarajauksella (Mutual Authentication with Distance-Bounding MAD)
+\item Vaatii erityisen bittihaastelaitteen, joka toimii CPUsta autonomisesti
+\item Lasketaan XOR-operaatioita satunnaisista biteistä ja mitataan vastausten aikaa
+\item Kuten aikahihnoissa, verrataan kulunutta aikaa * valonnopeus => maksimietäisyys
 \end{itemize}
+
+\paragraph{Kohtaamisen tuoreustakuu (Guaranteeing Encounter Freshness, GEF)}
+
+\begin{description}
+\item[GEF-Ce] GEF with Certifier Authentication
+\item[GEF-CeCl] GEF with Certifier and Claimant Authentication
+\end{description}
+
+\paragraph{Kohtaamisen aikatakuu (Guaranteeing the Time of Encounter, GTE)}
+
+\begin{description}
+\item[GTE-Ce] GTE with Certifier Authentication
+\item[GTE-CeCl] GTE with Certifier and Claimant Authentication
+\item[GTE-CeCl-opt] GTE with Certifier and Claimant Authentication, optimized
+\item[Merkle-puu] käytetään julkisena avaimena aikapohjaisella indeksillä. vrt TIK-protokolla.
+\end{description}
+
+\paragraph{Avainten jakelu}
+
+\begin{itemize}
+\item TESLA-protokolla. vrt TIK-protokolla aiemmin.
+\end{itemize}
+
+\paragraph{Hyökkääjien tyypitys}
+
+\begin{description}
+\item[Kohtaaja] Vihamielinen laite toimii Kohtaajan roolissa.
+\item[Todistaja] Vihamielinen laite Todistajana.
+\item[Kohtaaja-Todistaja] Vihamielinen laite molemmissa rooleissa
+\item[Tarkistaja] Vihamieinen laite yrittää kerätä tietoa Kohtaajalta jotta voi saada Todistajan luulemaan tavanneensa Kohtaajan.
+\end{description}
+
+\paragraph{SECTOR-mekanismien toiminta hyökkäätyyppejä vastaan}
+
+\begin{itemize}
+\item GEF-Ce ja GTE-Ce
+\item GEF-Ce ja GTE-Ce MAD-protokollan kanssa
+\item GEF-CeCl ja GTE-CeCl MAD-protokollan kanssa
+\item Julkisen avaimen ja symmetrisen avaimen -mekanismit
+\item Muut hyökkäykset
+\end{itemize}
+
+\paragraph{Tila-, laskenta- ja viestintävaativuudet}
+
+Tähän ehkä taulukko eri variaatioiden vaativuuksista käännettynä kirjoittajien taulukosta.
 
 \section{Puhtaasti protokollapohjaiset puolustukset}
 Seuraavilla ratkaisuilla on laajempi käyttöpotentiaali, koska ne eivät vaadi erityislaitteistoa.
@@ -464,6 +512,18 @@ Kirjoittajien analyysin perusteella todennäköisyys madonreiän tunnistamiselle
 
 \noindent \\
 Vaikka väärien tunnistusten mahdollisuus on jo tuotu esille, ei se todellisuudessa kirjoittajien mukaan ole kovin suuri uhka. Pahimmillaan todennäköisyys legitiimin laitteen väärään tunnistukseen paha-aikeisena 23 naapurin verkossa on 0,00003\%.
+
+\subsection{MobiWorp}
+
+Khalil et al jatkavat LiteWorpin ideaa staattisista verkoista mobiileihin verkkoihin MobiWorp-protokollallaan \cite{mobiworp}.
+
+\noindent \\
+Perusidea vartijoista ja naapurilistoista yhä sama, nyt lisänä laitteiden liikkumiseen liittyvät protokollaosat.
+
+\begin{itemize}
+\item Selfish Move Protocol (SMP)
+
+\end{itemize}
 
 \section{Yhteenveto}
 
