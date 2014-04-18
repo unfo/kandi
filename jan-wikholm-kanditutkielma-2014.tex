@@ -36,6 +36,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{amsmath}
+\usepackage{todonotes}
 
 
 % Automatically set the PDF metadata fields
@@ -143,6 +144,9 @@ Pääosa ad hoc -verkkojen alkuvaiheen tutkimuksesta on keskittynyt verkkojen it
 
 \noindent \\
 Madonreikähyökkäyksessä yleensä kaksi tai useampi paha-aikeista tahoa toimivat yhteistyössä saadakseen liikenteen ohjautumaan niiden välillä kulkevaa reittiä pitkin, jotta voivat toteuttaa yllä lueteltuja hyökkäyksiä. Nämä tahot välittävät kaikki kuulemansa paketit toiselle osapuolelle, joka toistaa ne omassa päässään. Tämä pakettien välitys voidaan toteuttaa hyökkääjien omalla suurinopeuksisella tiedonsiirtokanavalla, pakettien kapseloinnilla normaalia verkkoa pitkin tai vaikka suuritehoisella lähettimellä \cite{liteworp}. Tunnelin ollessa toiminnassa se häiritsee reititysprotokollia tarjoten lyhimmän ja yleensä nopeimman reitin, joten muut verkon laitteet päätyvät lähettämään suuren osan paketeista sen läpi. 
+
+\noindent \\
+Madonreikähyökkäyksen toiminta perustuu nimenomaan ad hoc -verkkojen määrittävään ominaisuuteen -- niiden autonomiseen reititykseen. Tukiasemiin perustuvassa verkossa vastaava ei voi toimia, koska kaikki liikenne ohjataan aina tukiasemien kautta.
 
 \noindent \\
 Erityisen salakavalan hyökkäyksestä tekee se, että hyökkääjien ei tarvitse murtaa mitään salausta koska koko hyökkäys perustuu pakettien kopiointiin (salakuunteluun ja sen jälkeiseen toistoon) verkon osasta toiseen.
@@ -283,7 +287,9 @@ Todentaja laitteen, \emph{C}, rooli on toimia todistajana A:lle B:n suhteen -- j
 \noindent\\
 Mikäli B on C:n naapuri ja se on eri sektorilla C:lle kuin A:lle niin A voi luottaa B:n olevan oikeasti vieressä eikä madonreikätunnelin toisella puolella.
 
+
 \paragraph{Worawannotai-hyökkäys ja tiukka naapurin löytäminen}
+\todo{Tämä kappale vaatii lisää työtä.}
 \noindent\\
 Erityistapaus todentaja-aseman hyväksikäytöstä on, jos yllä olevassa kuvassa A ja B eivät oikeasti kuule toisiaan ja C on hyökkääjä ja se saa asetettua A:n ja B:n väliin viestejä välittävän \emph{piilotetun hyökkääjän}. A tällöin pyytää C:tä todentamaan, että B on tämän naapuri eikä välissä ole madonreikää. Hyökkääjälaite C vakuuttaa A:n ja B:n olevan naapureitaan ja piilotettu hyökkääjälaite näiden välissä pääsee suorittamaan jo aiemmin kuvattuja madonreikähyökkäyksen eri keinoja - esimerkiksi salakuuntelua.
 
@@ -309,41 +315,45 @@ Tätä erityistapausta varten todentajalaitteen sijainnille pitää asettaa tiuk
 \label{fig:test}
 \end{figure}
 
-\newpage
 
 \subsection{SECTOR ja MAD}
 
-SECTOR on kokoelma toimia, joilla voidaan todentaa laitteiden tapaaminen, ja MAD on protokolla, jolla voidaan suojautua madonreikähyökkäyksiä vastaan. Nämä molemmat kuvaillaan Capkunin, Buttyanin ja Hubaux'n toimesta \cite{sector}.
+SECTOR on kokoelma toimia, joilla voidaan todentaa laitteiden tapaaminen, ja MAD on protokolla, jolla voidaan suojautua madonreikähyökkäyksiä vastaan. Nämä molemmat kuvaillaan Capkunin, Buttyanin ja Hubaux'n artikkelissa ``SECTOR: Secure Tracking of Node Encounters in Multi-hop Wireless Networks'' \cite{sector}.
 
-\paragraph{Oletuksia}
+\paragraph{SECTORin oletukset järjestelmän ja verkon suhteen}
 \noindent \\
+Käyttöympäristönä voi toimia sekä puhdas mobiilien päätelaitteiden ad hoc -verkko että hybridimalli, jossa on paikoittain paikallaan olevia tukiasemia. 
 
-\begin{enumerate}
-\item{Puhdas ad hoc -verkko tai voi olla myös tukiasemia}
-\item{Kellot synkronoitu alle sekunnin tarkkuudella}
-\item{Laitteet voivat mitata aikaa nanosekuntitarkkuudella}
-\item{MAD-protokolla olettaa autonomisen lisälaitteen bittihaasteita varten}
-\item{Ei lokaatiotietoja}
-\item{Työkalut kryptografiaan}
-\item{Keskitetty auktoriteetti, joka määrää verkkoon kuulumisesta ja identiteetistä}
-\item{Parienväliset avaimet tai julkiset avaimet tiedossa. Ei ota kantaa miten jaellaan.}
-\end{enumerate}
+\noindent \\
+SECTORiin liittyy aikasidonnaisia osia, joten oletetaan kaikien laitteiden olevan varustettu kellolla. Koska operaatiot eivät ole yhtä tarkkoja kuin edellisessä protokollassa, riittää kellojen synkronointitarkkuudeksi alle sekunnin tarkkuus -- vertaa luvun~\ref{packetleashes} aikahihnojen satojen nanosekuntien tarkkuus. Vaikka synkronointi suoritetaan melko pienellä tarkkuudella, oletetaan ajanmittauksen tarkkuudeksi kuitenkin nanosekuntiskaalaa, jotta voidaan laskea kahden tapahtuman välissä kulunutta aikaa tarkasti ja tehdä sen perusteella päätöksiä.
 
-Kolme osapuolta: 
+\noindent\\
+MAD-protokolla olettaa päätelaitteissa olevan lisälaitteen, joka osaa vastata verkon yli tulevaan bittihaasteeseen itsenäisesti ohittaen laitteen prosessorin.
+
+\noindent\\
+SECTOR olettaa myös, että verkossa on jokin keskitetty auktoriteetti, joka kontrolloi verkkoon liittymistä ja antaa laitteille uniikin identiteetin. Lisäksi oletetaan, että laitteilla on parikohtaiset salaiset avaimet tai toistensa todennetut julkiset avaimet. Tämä avainten jakaminen voidaan saada aikaan esimerkiksi tallentamalla avaimet verkkoa rakentaessa manuaalisesti laitteisiin tai käyttämällä jotakin avainvaihtoprotokollaa.
+
+\paragraph{SECTORin määrittämät roolit ja niiden tehtävät}
+\noindent\\
+SECTOR määrittelee kolme eri roolia, joilla on omat tehtävänsä ja jokaisella näistä on erilainen vaikutus tullessa kaapatuksi vihamielisiin toimiin.
+
 \begin{description}
-\item[Kohtaaja] joka väittää kohdanneensa jonkin toisen laitteen
-\item[Todistaja] joka on joko kohdattu laite tai jonkin laite joka voi todistaa Kohtaajan olleen lähellä
-\item[Tarkistaja] joka tarkistaa ja varmentaa Kohtaajan väitteen tapaamisestaan Todistajan kanssa
+\item[Kohtaaja] on laite, joka väittää kohdanneensa jonkin toisen laitteen ennen, jälkeen tai tarkalleen jonakin tiettynä ajanhetkenä.
+\item[Todistaja] on laite, joka voi todistaa joko kohtaamisen ajanhetken -- jos todistaja itse oli kohdattu laite -- tai kohtaajan sijainnin tiettynä ajanhetkenä -- jos todistaja on havainnut laitteen.
+\item[Varmentaja] on laite, jolle annetaan tiedot kohtaajan väitteestä ja todistajan tarjoama lisäinformaatio ja se pystyy tarkistamaan tietojen yhteensopivuuden ja täten varmentaa kohtaamisen tapahtuneen.
 \end{description}
 
-\paragraph{MAD-protokolla}
+\noindent\\
+Puhtaissa ad hoc -verkoissa, joissa laitteet ovat yhdenvertaisia, kaikki laitteet voivat toimia kaikissa rooleissa ja täten laitteiden väliset kohtaamiset voidaan joustavasti varmentaa minkä tahansa laitekolmikon toimesta. Mikäli käytössä on tukiasemallinen hybridiverkko -- kuten monihyppyinen matkapuhelinverkko -- voi varmentajana toimia vain osa verkon laitteista: tukiasemat.
 
-\begin{itemize}
-\item Molemminpuoleinen todennus aikarajauksella (Mutual Authentication with Distance-Bounding MAD)
-\item Vaatii erityisen bittihaastelaitteen, joka toimii CPUsta autonomisesti
-\item Lasketaan XOR-operaatioita satunnaisista biteistä ja mitataan vastausten aikaa
-\item Kuten aikahihnoissa, verrataan kulunutta aikaa * valonnopeus => maksimietäisyys
-\end{itemize}
+\paragraph{MAD-protokolla}
+\noindent\\
+MAD-protokolla, eli molemminpuoleinen todennus etäisyysrajauksella (Mutual Authentication with Distance-Bounding, MAD), on hyvin yksinkertainen rakenteeltaan ja samalla varma tapa todentaa kahden laitteen tapaaminen. Protokollan ydinkomponentit ovat laitekohtainen satunnainen bittisarja sekä laite, joka voi autonomisesti ottaa vastaan yksibittisen haasteen ja lähettää takaisin XOR-bittioperaation tuloksen tästä bittihaasteesta ja laitteen satunnaisen bittisarjan seuraavasta bitistä.
+
+
+Vaatii erityisen bittihaastelaitteen, joka toimii CPUsta autonomisesti
+Lasketaan XOR-operaatioita satunnaisista biteistä ja mitataan vastausten aikaa
+Kuten luvun~\ref{packetleashes} aikahihnojen kanssa, verrataan kulunutta aikaa * valonnopeus => maksimietäisyys
 
 \paragraph{Kohtaamisen tuoreustakuu (Guaranteeing Encounter Freshness, GEF)}
 
