@@ -211,6 +211,7 @@ Geohihnan toiminta on hyvin yksinkertainen: laite tarkistaa onko sen oma sijaint
 Geohihnoissa laitteet tietävät toistensa oletetun maksimiliikenopeuden, ja täten madonreikätunneloitu paketti voidaan tunnistaa ilkivaltaisen laitteen lähettämäksi, jos se lähettää verkkoon kaksi pakettia, joiden lokaatiotiedoissa on tapahtunut maksimiliikenopeutta nopeampaa liikettä edellyttävä muutos.
 
 \paragraph{TIK-protokolla} 
+\label{tik}
 \noindent \\
 Tärkeimpänä ominaisuutena koko aikahihnafunktion toiminnassa on aikaleimojen luotettavuus; leimat pitää pystyä todentamaan. Todentamisen toteuttamiseen kirjoittajat hylkäävät jaetut avaimet suoraan todeten niiden hallinnan olevan liian raskas operaatio. Toisena ideana on digitaalisen allekirjoituksen liittäminen jokaiseen pakettiin, jolloin jokaiselle laitteelle riittää yksi julkinen--yksityinen-avainpari ja jokaisen laitteen tarvitsee tietää vain tämä kaikkien julkisten avainten joukko. Digitaaliset allekirjoitukset kuitenkin yleensä perustuvat raskaaseen asymmetriseen kryptografiaan, joka ei sovi ad hoc –verkkojen oletettuun resurssivähyyteen.
 
@@ -361,29 +362,36 @@ Kun \emph{l}-bittinen jono on kulutettu loppuun, seuraa protokollan varmennusvai
 
 \paragraph{Kohtaamisen ajankohdan todistustavat}
 \noindent\\
-SECTOR sisältää viisi erilaista tapaa todistaa kohtaamisen ajankohtaa.
+SECTOR sisältää viisi erilaista tapaa todistaa kohtaamisen ajankohtaa. Nämä tavat on luokiteltu kahteen kategoriaan todistettavan ajankohdan tarkkuuden mukaan: kohtaamisen tuoreustakuu ja kohtaamisen aikatakuu. Tuoreustakuu takaa kohtaamisen tapahtuneen ennen tiettyä ajankohtaa, mutta ei todista ajankohtaa tarkasti. Kohtaamisen aikatakuu pystyy todistamaan ajankohdan halutulla tarkkuudella, joka on ennaltamäärätty. 
 
 \paragraph{Kohtaamisen tuoreustakuu (Guaranteeing Encounter Freshness, GEF)}
+\noindent\\
+Tuoreustakuuta varten SECTOR määrittelee kaksi takuutasoa: todistaja-takuun sekä todistaja--kohtaaja-takuun. Ensimmäisessä jokainen verkon laite on etukäteen luonut satunnaisen luvun \emph{V} ja ottanut siitä \emph{N} rekursiivistä tiivistettä. N on etukäteen määritelty luku, jonka pitäisi kattaa kaikki tarvittavat todistuskerrat. Julkisena allekirjoituksenaan laitteet julkaisevat N:nnen rekursiivisen tiivisteen ja paljastavat edellisiä tiivisteitä ketjussa aika- tai pyyntöpohjaisesti. Koska protokolla olettaa tiivistefunktion olevan alkukuvaresistentti, tämä on yksinkertainen tapa todentaa laitteen olevan tiivisteketjun omistaja.
 
-\begin{description}
-\item[GEF-Ce] GEF with Certifier Authentication
-\item[GEF-CeCl] GEF with Certifier and Claimant Authentication
-\end{description}
+\noindent\\
+Kohtaaja, \emph{A}, saa siis tällaisen kohdatun laitteen, \emph{B}, vielä paljastushetkellä kaikille tuntemattoman edellisen alkukuvan ja pystyy täten todistamaan varmentajalle kohtaamisen tapahtuneen. Tämä kuitenkin vain todistaa, että joku laite verkossa on tavannut \emph{B}:n ja \emph{A} on voinut vain kaapata tuon tiedon matkalla ja käyttää sitä hyväkseen nyt. 
+\noindent\\
+Tätä haastetta varten SECTOR tarjoaa todistaja--kohtaaja-takuun, jossa kaikki verkon laitteet luovat kaikkia muita verkon laitteita varten omat tiivisteketjunsa ja julkaisevat kaikkien tietoon omat juurensa jokaista eri laitetta varten. Täten laite \emph{M} ei voi käyttää laitteen \emph{A} saamaa alkukuvavastausta \emph{C}:ltä, koska \emph{C} on julkaissut kaikille sekä juuritiivisteen \emph{M} että \emph{A} varten ja jos tuota alkukuvavastausta käytetään rekursiivisesti tiivistefunktion läpi ei päädytä \emph{C}:n juuritiivisteenseen \emph{M}:lle.
+\noindent\\
+Tällaisen $n*(n-1)$ tiivistelistan ylläpito ei ole tilavaatimuksiltaan järkevää ottaen huomioon laitteiden rajalliset resurssit. Tämän lisäksi tuoreustakuu takaa vain tapaamisen tapahtuneen ennen tietyn avaimen paljastusta ja tilarajoitteiden takia noita avaimia ei voi luoda esimerkiksi joka sekunnille joten etäisyystarkkuus heikkenee.
 
 \paragraph{Kohtaamisen aikatakuu (Guaranteeing the Time of Encounter, GTE)}
+\noindent\\
+Koska tuoreustakuun tarkkuus kohtaamisen ajankohdan suhteen ei ole riittävä, SECTOR kuvailee tähän tarkoitukseen paremman ratkaisun: samanlaiset Merkle-puut kuin luvun \ref{tik} TIK-protokollassa. Tässäkin Merkle-puun lehtisolmujen arvo on aikaan sidottu ja sen arvo muodostuu satunnaisluvusta. Kuten tuoreustakuussa on aikatakuussa samat takuutasot: todistaja-takuun sekä todistaja--kohtaaja-takuun. Nämä takuutasot oletuksena mukailevat tuoreustakuun toimintaa eli todistaja-takuuta varten jokaisella laitteella on yksi muodostettu Merkle-puu, jonka juuritiiviste toimii sen julkisena allekirjoituksena, ja todistaja--kohtaaja-takuuta varten jokainen laite luo jokaista verkon muuta laitetta varten oman tiivistepuun.
 
-\begin{description}
-\item[GTE-Ce] GTE with Certifier Authentication
-\item[GTE-CeCl] GTE with Certifier and Claimant Authentication
-\item[GTE-CeCl-opt] GTE with Certifier and Claimant Authentication, optimized
-\item[Merkle-puu] käytetään julkisena avaimena aikapohjaisella indeksillä. vrt TIK-protokolla.
-\end{description}
+\noindent\\
+Aikatakuun tapauksessa SECTOR tarjoaa kuitenkin myös optimoidun tavan tallentaa nuo kaikkien laitteiden tiivistepuut yhdeksi tiivistepuuksi per laite, jotta ei tarvitse jaella kuin yksi juuritiiviste. Tällöin jokainen laite muodostaa oman tiivistepuunsa, mutta ne ovat isomman tiivistepuun lapsia, katso kuva~\ref{fig:sectortrees}.
 
-\paragraph{Avainten jakelu}
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{tree-of-trees}
+  \caption{Kohtaamisen aikatakuuta varten muodostettava optimoitu tiivistepuiden tiivistepuu \cite{sector}}
+  \label{fig:sectortrees}
+\end{figure}
 
-\begin{itemize}
-\item TESLA-protokolla. vrt TIK-protokolla aiemmin.
-\end{itemize}
+
+\noindent\\
+Kuten luvun~\ref{tik} TIK-protokollassa, perustuu tiivistepuilla varmennus siihen, että jokaisen varmennuksen yhteydessä puun omistaja luovuttaa kaikki ne tiivistepuun solmut, jotka tarvitaan juuritiivisteen laskuun.
 
 \paragraph{Hyökkääjien tyypitys}
 
