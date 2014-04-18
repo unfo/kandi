@@ -350,10 +350,18 @@ Puhtaissa ad hoc -verkoissa, joissa laitteet ovat yhdenvertaisia, kaikki laittee
 \noindent\\
 MAD-protokolla, eli molemminpuoleinen todennus etäisyysrajauksella (Mutual Authentication with Distance-Bounding, MAD), on hyvin yksinkertainen rakenteeltaan ja samalla varma tapa todentaa kahden laitteen tapaaminen. Protokollan ydinkomponentit ovat laitekohtainen satunnainen bittisarja sekä laite, joka voi autonomisesti ottaa vastaan yksibittisen haasteen ja lähettää takaisin XOR-bittioperaation tuloksen tästä bittihaasteesta ja laitteen satunnaisen bittisarjan seuraavasta bitistä.
 
+\noindent\\
+Protokollan alustusvaiheessa molemmat laitteet luovat \emph{l}-bittisen satunnaisen bittijonon sekä \emph{l'}-bittisen satunnaisen vahvistusbittisarjan. Aloitteen tehnyt laite, \emph{A}, lähettää tiivisteen näiden bittisarjojen yhdisteestä ja vastaanottaja, \emph{B}, lähettää vastaavan tiivisteensä takaisin. Bittisarjojen luonnin voi hoitaa jo ennen laitteiden kohtaamista, jotta laskentavaatimukset protokollalle kohtaamistilanteessa saadaan pienennettyä.
 
-Vaatii erityisen bittihaastelaitteen, joka toimii CPUsta autonomisesti
-Lasketaan XOR-operaatioita satunnaisista biteistä ja mitataan vastausten aikaa
-Kuten luvun~\ref{packetleashes} aikahihnojen kanssa, verrataan kulunutta aikaa * valonnopeus => maksimietäisyys
+\noindent\\
+Alustusvaiheen jälkeen laitteet aloittavat tuon \emph{l}-bittisen jonon läpikäynnin bitti kerrallaan. \emph{A} lähettää ensimmäisen bittinsä sellaisenaan ja tallentaa lähetysajan kellonsa maksimitarkkuudella talteen. \emph{B}:n bittihaastelaite laskee XOR-bittioperaation vastaanotetusta bitistä sekä sen seuraavasta, eli ensimmäisestä, bitistä, lähettää sen \emph{A}:lle sekä tallentaa oman lähetysaikansa. \emph{A} vastaanottaa \emph{B}:ltä tulleen vastauksen ja, kuten edellä, laskee XOR-bittioperaation seuraavan bittijononsa bitin kanssa ja lähettää sen. Tämän bittivaihdon lisäksi sekä \emph{A} että \emph{B} vertailevat paketin saapumisaikaa edellisen oman pakettinsa lähetysaikaan ja saavat täten sisäisen kellonsa tarkkuudella maksimietäisyyden välimatkalleen, koska paketti ei voi kulkea valonnopeutta nopeammin -- sama periaate kuin luvun~\ref{packetleashes} aikahihnojen kanssa.
+
+\noindent\\
+Kun \emph{l}-bittinen jono on kulutettu loppuun, seuraa protokollan varmennusvaihe, jossa molemmat osapuolet laskevat XOR-bittioperaatioilla alkuperäisen vastapuolen bittijonon ja laskevat siitä tiivisteen omien tunnistetietojensa kanssa sekä luovuttavat alustusvaiheessa lasketun \emph{l'}-bittisen jonon. Näiden tietojen avulla molemmat laitteet voivat päästä varmuuteen, että paketteja ei ole välissä muokattu.
+
+\paragraph{Kohtaamisen ajankohdan todistustavat}
+\noindent\\
+SECTOR sisältää viisi erilaista tapaa todistaa kohtaamisen ajankohtaa.
 
 \paragraph{Kohtaamisen tuoreustakuu (Guaranteeing Encounter Freshness, GEF)}
 
