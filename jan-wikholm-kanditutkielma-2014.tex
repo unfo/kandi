@@ -92,8 +92,8 @@
 % This is probably mostly relevant for computer scientists
 % uncomment the following; contents of \classification will be printed under the abstract with a title
 % "ACM Computing Classification System (CCS):"
-% \classification{}
-
+\classification{C.2.2 [Network Protocols]}
+%\classification{K.6.5 [Security and Protection]}
 % If the automatic page number counting is not working as desired in your case,
 % uncomment the following to manually set the number of pages displayed in the abstract page:
 %
@@ -378,9 +378,8 @@ Todentajalaitteen, \emph{C}, rooli on toimia todistajana A:lle B:n suhteen -- ja
 Mikäli B on C:n naapuri ja se on eri sektorilla C:lle kuin A:lle niin A voi luottaa B:n olevan oikeasti vieressä eikä madonreikätunnelin toisella puolella.
 
 \subsubsection{Worawannotai-hyökkäys ja sen estäminen}
-\todo{Tämä kappale vaatii lisää työtä.}
-\noindent\\
-Erityistapaus todentaja-aseman hyväksikäytöstä on, jos kuvassa~\ref{fig:todentajalaitteet} A ja B eivät oikeasti kuule toisiaan ja C on hyökkääjä ja se saa asetettua A:n ja B:n väliin viestejä välittävän \emph{piilotetun hyökkääjän} D. A tällöin pyytää C:tä todentamaan, että B on tämän naapuri eikä välissä ole madonreikää. Hyökkääjälaite C vakuuttaa A:n ja B:n olevan naapureitaan ja piilotettu hyökkääjälaite \emph{D} näiden välissä pääsee suorittamaan jo aiemmin kuvattuja madonreikähyökkäyksen eri keinoja - esimerkiksi salakuuntelua. Tätä hyökkäystä kutsutaan Worawannotai-hyökkäykseksi keksijänsä mukaan.
+
+Erityistapaus todentaja-aseman hyväksikäytöstä on, jos kuvassa~\ref{fig:todentajalaitteet} laitteet A ja B eivät oikeasti kuule toisiaan ja C on hyökkääjä ja se saa asetettua A:n ja B:n väliin viestejä välittävän \emph{piilotetun hyökkääjän} D. A tällöin pyytää C:tä todentamaan, että B on tämän naapuri eikä välissä ole madonreikää. Hyökkääjälaite C vakuuttaa A:n ja B:n olevan naapureitaan ja piilotettu hyökkääjälaite \emph{D} näiden välissä pääsee suorittamaan jo aiemmin kuvattuja madonreikähyökkäyksen eri keinoja - esimerkiksi salakuuntelua. Tätä hyökkäystä kutsutaan Worawannotai-hyökkäykseksi keksijänsä mukaan.
 
 \begin{figure}[!ht]
 \begin{subfigure}{.5\textwidth}
@@ -396,11 +395,11 @@ Erityistapaus todentaja-aseman hyväksikäytöstä on, jos kuvassa~\ref{fig:tode
   \label{fig:sub2}
 \end{subfigure}%
 \caption{Todentajalaitteen mahdolliset sijainnit}
-\label{fig:test}
+\label{fig:worawannotai}
 \end{figure}
 
 \noindent \\
-Tätä erityistapausta varten todentajalaitteen sijainnille pitää asettaa tiukemmat rajat siten ettei todentaja saa olla kuuluvuusalueita yhdistävällä alueella.
+Tätä erityistapausta varten todentajalaitteen sijainnille pitää asettaa tiukemmat rajat siten ettei todentaja saa olla kuuluvuusalueita yhdistävällä alueella. Todentajalaitteen löysät ja tiukat sijaintirajaukset on kuvattu kuvassa~\ref{fig:worawannotai}.
 
 % 
 % 
