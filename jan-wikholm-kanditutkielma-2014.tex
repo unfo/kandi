@@ -527,15 +527,24 @@ Vaikka väärien tunnistusten mahdollisuus on jo tuotu esille, ei se todellisuud
 
 \subsection{MobiWorp}
 
-Khalil et al jatkavat LiteWorpin ideaa staattisista verkoista mobiileihin verkkoihin MobiWorp-protokollallaan \cite{mobiworp}.
+Khalil et al jatkavat LiteWorpin ideaa staattisista verkoista verkkoihin, joissa laitteet voivat liikkua, MobiWorp-protokollallaan \cite{mobiworp}.
 
 \noindent \\
-Perusidea vartijoista ja naapurilistoista yhä sama, nyt lisänä laitteiden liikkumiseen liittyvät protokollaosat.
+Perusidea vartijoista ja naapurilistoista yhä sama, nyt lisänä laitteiden liikkumiseen liittyvät protokollaosat. He esittelevät kaksi uutta protokollaa: SMP-protokollan (Selfish move protocol) sekä CAP-CV-protokollan (Connectivity Aided Protocol with Constant Velocity). Näiden protokollien lisäksi yksi uusi ja fundamentaali ero LiteWorpiin on vaatimus \emph{keskitetystä auktoriteestistä} CA:sta (Central Authority), joka pystyy valvomaan ilkivaltaisesti toimivia laitteita koko niiden elinkaaren ajan -- tällöin ilkivaltainen laite ei voi paeta vastuuta liikkumalla uuteen verkon osaan.
 
-\begin{itemize}
-\item Selfish Move Protocol (SMP)
+\paragraph{SMP-protokolla}
+\noindent\\
+Jokainen laite, joka haluaa toimia verkon osana, hakee CA:lta valtuutettua lupaa integroitua verkkoon tietyssä sijainnissa, x- ja y-koordinaatit, todennetulla naapuripäivitys- eli ANUM-pyynnöllä (Authentication Neighbor Update Message). CA tarkistaa tietokannastaan pyytävän laitteen nykyisten voimassaolevien tai evättyjen lupien tilan ja voi joko myöntää ANUM-luvan, lopettaa pyynnön käsittelyn tai lähettää vastauksena ANUM-eväyksen. Mikäli CA lähettää eväykseen, kaikki eväyspaketin lähetyksen kuulevat laitteet lisäävät evätyn laitteen omalle estolistalleen ja tämä laite ei koskaan voi enää päästä verkkoon takaisin.
 
-\end{itemize}
+\noindent\\
+Laitteen siirtyessä paikasta toiseen se menettää oikeutensa toimia verkon välityssolmuna -- se voi yhä vastaanottaaa itsellensä tarkoitettuja paketteja ja lähettää muille viestejä, mutta pakettien välitys ei ole sallittua. Kun laite pysähtyy uuteen paikkaan, se voi lähettää CA:lle ANUM-pyynnön uudella sijaintitiedollaan ja luvan saatuaan se voi integroitua verkkoon siinä sijainnissa lähettämällä yleislähetyksenä naapureilleen tiedon itsestään, ANUM-luvastaan sekä omasta estolistastaan. Naapurit tarkistavat ANUM-luvan aitouden -- se on allekirjoitettu CA:n salaisella avaimella -- ja sen ollessa aito lisäävät uuden naapurin naapurilistaansa ja tallentavat sen estolistan talteen.
+
+\noindent\\
+Kun laite siirtyy ANUM-lupansa sijainnista pois, sillä on \emph{armonaikaa} (grace period) $t_{grace}$ verran, jonka jälkeen se ei voi lähettää verkkoon enää mitään muita viestejä kuin CA:lle suunnattuja ANUM-pyyntöjä. Jos laitteen siirtymä pisteestä A pisteeseen B kestää kauemmin kuin $t_{grace}$ sen pitää välissä pyytää uusi ANUM-lupa, koska muuten se voi edes vastaanottaa sille tarkoitettuja paketteja.
+
+\paragraph{CAP-CV-protokolla}
+\noindent\\
+SMP-protokolla ei sovi hyvin verkkoihin, joissa laitteiden yhdenaikainen liikkuvuus on suurta, koska näissä tilanteissa isojakin verkon osia voi olla täynnä liikkeessä olevia laitteita, joilla ei ole oikeus välittää paketteja toisilleen. Toinen ongelma SMP-protokollassa on se, ettei laite voi liikkeessään $t_{grace}$ jälkeen viestiä enää mitenkään vaikka sille olisi tarve. Näitä ongelmia varten CAP-CV-protokolla kehitettiin. Se sallii laitteen pyytää CA:lta siirtymälupaa paikasta A paikkaan B ja kertoa CA:lle samalla sen arvioitu keskisiirtymänopeus. Mikäli laite noudattaa tätä CAP-CV-protokollan ANUM-luvan reittiä ja arvioitua nopeutta se voi viestiä verkkoon koko liikkeen ajan.
 
 \section{Yhteenveto}
 
