@@ -154,13 +154,36 @@ Erityisen salakavalan hyökkäyksestä tekee se, että hyökkääjien ei tarvits
 \noindent \\
 Esittelemme luvussa 2 madonreikähyökkäysten hyökkääjä- \cite{delphi} ja hyökkäystyypit \cite{liteworp}, minkä jälkeen kerromme laitteistoriippuvaisista puolustuskeinoista luvussa 3 ja protokollapohjaisista puolustuksista luvussa 4.
 
-
+% 
+% 
+% 
+% 
+% 
+% 
 \section{Hyökkääjä- ja hyökkäystyypit}
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 
-Madonreikähyökkääjiä on kahta eri tyyppiä: \emph{piilotettu} ja \emph{avoin} \cite{delphi} ja hyökkäyksiä on viittä eri tyyppiä. \cite{liteworp}. Kaikkia hyökkäystyyppejä ei ole käsitelty kaikissa puolustuskeinoissa, joten käsittelemättömien hyökkäystyyppien torjumisen toimivuus on erinomainen kohde jatkotutkimukselle.
+Madonreikähyökkääjiä on kahta eri tyyppiä: \emph{piilotettu} ja \emph{avoin} \cite{delphi} ja hyökkäyksiä on viittä eri tyyppiä. \cite{liteworp}. Kaikkia hyökkäystyyppejä ei ole käsitelty kaikissa puolustuskeinoissa, joten käsittelemättömien hyökkäystyyppien torjumisen toimivuus on erinomainen kohde jatkotutkimukselle. Hyökkäys- ja hyökkääjätyyppejä kuvattuna kuvassa~\ref{fig:attacker-types}.
+
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\linewidth]{attacks}
+  \caption{Eri madonreikähyökkäystyypit yhdessä kuvassa.}
+  \label{fig:attacker-types}
+\end{figure}
 
 \subsection{Hyökkääjätyypit}
-\paragraph{Piilotetut hyökkääjät} toimivat verkossa kertomatta muille verkon laitteille omasta olemassaolostaan. Ne kuuntelevat liikennettä ja siirtävät paketteja madonreiän läpi täysin muokkaamatta. Tällöin kaukanakin olevat laitteet voivat luulla madonreiän läpi tulevia paketteja naapureilta tuleviksi, koska eivät tiedä välissä olevan toistimena toimiva madonreikä.
+\paragraph{Piilotetut hyökkääjät} toimivat verkossa kertomatta muille verkon laitteille omasta olemassaolostaan. Ne kuuntelevat liikennettä ja siirtävät paketteja madonreiän läpi täysin muokkaamatta. Tällöin kaukanakin olevat laitteet voivat luulla madonreiän läpi tulevia paketteja naapureilta tuleviksi, koska eivät tiedä välissä olevan toistimena toimiva madonreikä. Katso kuvan~\ref{fig:attacker-types} solmu R.
 
 \noindent \\
 Esimerkiksi pakettihihnat, jotka esitellään luvussa ~\ref{packetleashes}, toimivat piilotettuja hyökkääjiä vastaan.
@@ -169,28 +192,48 @@ Esimerkiksi pakettihihnat, jotka esitellään luvussa ~\ref{packetleashes}, toim
 
 \subsection{Hyökkäystyypit}
 
-\paragraph{Erilliskaistahyökkäys} on se hyökkäystyyppi, johon yleisimmin viitataan nimellä \emph{madonreikähyökkäys}. Mikäli hyökkääjillä on normaalin lähetyskaistan - esimerkiksi wlan-verkkon - lisäksi käytössä vaikkapa yksinkertaisesti kytketty ethernetverkko, voivat ne kommunikoida yleistä verkkoa nopeammin ja sen kantamaa pidemmälle. Tämä sotkee reititysprotokollia ja suuri osa paketeista päätyy kulkemaan hyökkääjien linkin läpi.
+\paragraph{Erilliskaistahyökkäys} on se hyökkäystyyppi, johon yleisimmin viitataan nimellä \emph{madonreikähyökkäys}. Mikäli hyökkääjillä on normaalin lähetyskaistan - esimerkiksi wlan-verkkon - lisäksi käytössä vaikkapa yksinkertaisesti kytketty ethernetverkko, voivat ne kommunikoida yleistä verkkoa nopeammin ja sen kantamaa pidemmälle. Tämä sotkee reititysprotokollia ja suuri osa paketeista päätyy kulkemaan hyökkääjien linkin läpi. Kuvassa~\ref{fig:attacker-types} laitteiden M1 ja M2 välillä on erilliskaistaa kuvaava tumma viiva. Kaikki M1 lähistöllä olevat laitteet luulevat olevansa myös M2:n lähistöllä olevien laitteiden naapureita.
 
-\paragraph{Pakettikapseloinnissa} hyökkääjät H1 ja H2 voivat käyttää jo olemassa olevaa verkkoa: H1 kuulee paketin ja luo uuden H2:lle suunnatun paketin, jonka sisältönä on sellaisenaan H1:n kaappaama paketti. Kun tämä kapseloitu paketti saavuttaa H2:n, se toistaa alkuperäisen sisällön sellaisenaan verkkoon, joten sen naapurit luulevat H1:n naapureiden olevan lähellä. Tämä ei vaadi hyökkääjien osalta mitään muista verkon laitteista poikkeavia resursseja.
+\paragraph{Pakettikapseloinnissa} kuvan~\ref{fig:attacker-types} hyökkääjät P1 ja P2 voivat käyttää jo olemassa olevaa verkkoa: P1 kuulee paketin ja luo uuden P2:lle suunnatun paketin, jonka sisältönä on sellaisenaan P1:n kaappaama paketti. Kun tämä kapseloitu paketti saavuttaa P2:n, se toistaa alkuperäisen sisällön sellaisenaan verkkoon, joten sen naapurit luulevat P2:n naapureiden olevan lähellä. Tämä ei vaadi hyökkääjien osalta mitään muista verkon laitteista poikkeavia resursseja. Täten esimerkiksi laite C luulee että sen lyhin reitti laitteeseen I on $C-P1-I$ (2 hyppyä) vaikka todellisuudessa paketti vain kapseloidaan ja sen oikea reitti on $C-P1-C-E-F-G-P2-I$ (7 hyppyä), joka on pidempi matka kuin sen alkuperäinen $C-E-F-G-P2-I$ reitti (5 hyppyä).
 
-\paragraph{Suurteholähetys} on malliesimerkki siitä, että hyökkääjille voi olettaa loputtomat resurssit toisin kuin muille verkon laitteille, joita nimenomaan yleensä yhdistää resurssien vähyys. Tässä hyökkäystyypissä hyökkääjälaite lähettää kaappaamansa reitityspaketit huomattavan suurella lähetysteholla ja täten saa aikaan sen itsensä lävitse kulkevan lyhimmän reitin. Tämä hyökkäys ei siis vaadi kahta osapuolta.
+\paragraph{Suurteholähetys} on malliesimerkki siitä, että hyökkääjille voi olettaa loputtomat resurssit toisin kuin muille verkon laitteille, joita nimenomaan yleensä yhdistää resurssien vähyys. Tässä hyökkäystyypissä kuvan~\ref{fig:attacker-types} hyökkääjälaite S lähettää kaappaamansa reitityspaketit huomattavan suurella lähetysteholla (katkoviivalla S:n ympärillä) ja täten saa aikaan sen itsensä lävitse kulkevan lyhimmän reitin. Tämä hyökkäys ei siis vaadi kahta osapuolta. Täten kaikki S:n lähetyksen kuuluvuusalueella olevat laitteet luulevat olevansa S:n naapureita ja yhden hypyn päässä laitteista S1, S2 ja S3. Mikäli nämä huijatut laitteet yrittävät lähettää viestiä S:n kautta, ne epäonnistuvat siinä, koska niiden lähetysteho ei riitä lähettämään S:lle asti.
 
-\paragraph{Pakettivälitys} -- kuten suurteholähetys -- ei vaadi hyökkääjäparia vaan sen voi suorittaa yksikin vihamielinen laite. Tässä hyökkääjä on kahden laitteen välissä välittäen paketteja jolloin nämä laitteet luulevat olevansa naapureita ja hyökkääjä niiden välissä voi suorittaa esimerkiksi salakuuntelua tai palvelunestohyökkäystä.
+\paragraph{Pakettivälitys} -- kuten suurteholähetys -- ei vaadi hyökkääjäparia vaan sen voi suorittaa yksikin vihamielinen laite. Tässä kuvan~\ref{fig:attacker-types} hyökkääjä R on kahden laitteen, R1 ja R2, välissä välittäen paketteja jolloin nämä laitteet luulevat olevansa naapureita ja hyökkääjä niiden välissä voi suorittaa esimerkiksi salakuuntelua tai palvelunestohyökkäystä. Tämä on perinteinen ns. välimieshyökkäys, mutta on tyypiltään samanlainen kuin madonreikähyökkäys ja siksi mukana tässä.
 
 \paragraph{Protokollapoikkeamat} ovat paha-aikeisten laitteiden tahallista verkkoprotokollan rikkomista: esimerkiksi pakettitörmäysten estämiseksi tietyt protokollat vaativat reitityspakettien lähetyksessä pientä viivettä - paha-aikeinen laite voi täten lähettää paketit heti ja aiheuttaa tavallisille laitteille haittaa törmäyksillä. Toinen vaihtoehto on reitityspakettien lähettämättä jättäminen, jolloin verkon reititys ja polunetsintä eivät toimi oikein. Kummassakin tapauksessa hyökkääjä voi junailla toimensa siten, että suuri osa verkon liikenteestä päätyy reitittymään sen läpi.
+
 
 \section{Laitteistoriippuvaiset puolustusmekanismit}
 
 Alla kuvatut puolustusmekanismit eivät vaadi reititysprotokolliin muutoksia, mutta niillä on laitteistovaatimuksia.
 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+
 \subsection{Pakettihihnat ja TIK-protokolla}
 \label{packetleashes}
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 Yih-Chun Hu et al \cite{leashes} kuvailevat uuden mekanismin - \emph{pakettihihnat} (packet leashes) - ja sen kaksi eri varianttia: \emph{aikahihnan} (temporal leash) ja \emph{geohihnan} (geographic leash). Tässä hihnalla tarkoitetaan sellaista tietoa, jolla paketin enimmäiskantamaa voidaan rajoittaa. Tällaista tietoa ovat esimerkiksi paketin vanhenemista ilmaiseva aikaleima tai lähettäjän paikkatiedon ja paketin maksimietäisyyden yhdistelmä.
 
 \noindent \\
 Pakettihihnojen lisäksi he luovat uuden TIK-verkkoprotokollan, joka käyttää aikahihnoja madonreikiä vastaan.
 
-\paragraph{Aikahihnat} 
+\subsubsection{Aikahihnat} 
 \noindent \\
 Aikahihnojen edellytyksenä on tarkka kellojen synkronointitarkkuus: muutaman mikrosekunnin tai jopa satojen nanosekuntien tarkkuus. Kaikkien laitteiden pitää myöskin olla tietoisia virhemarginaalin suuruusluokasta kahden laitteen välillä. Tällainen synkronointitarkkuus onnistuu esimerkiksi GPS:n avulla. Vaikka tarkkuusvaatimus on erittäin tiukka, on se kirjoittajien mukaan täysin hyväksyttävä ottaen huomioon madonreikähyökkäyksen vakavuuden.
 
@@ -200,7 +243,7 @@ Aikahihnaa muodostaessa lähettäjä päättää enimmäispituuden lähetykselle
 \noindent \\
 Vaikka aikahihna on hihnatyypeistä tarkempi, on sen haasteena se, ettei lähettäjä tiedä aina tarkalleen omaa lähetysaikaansa, koska fyysisen kerroksen lähetysmekanismi voi joutua odottamaan vuoroaan. Täten on vaikeaa etukäteen luoda lähetysajankohtaan perustuvaa digitaalista allekirjoitusta. Tämän kirjoittajat ovat ratkaisseet kohta esiteltävässä TIK-protokollassa.
 
-\paragraph{Geohihnat}
+\subsubsection{Geohihnat}
 \noindent \\
 Geohihnoja käytettäessä kaikkien verkon laitteiden pitää tietää oma sijaintitietonsa sekä niiden pitää pystyä synkronoimaan kellonsa muiden kanssa. Kellojen synkronointitarkkuus ei ole niin tärkeä seikka, koska laitteiden liikkumisvauhti suhteessa valonnopeuteen on marginaalinen.
 
@@ -210,7 +253,7 @@ Geohihnan toiminta on hyvin yksinkertainen: laite tarkistaa onko sen oma sijaint
 \noindent \\
 Geohihnoissa laitteet tietävät toistensa oletetun maksimiliikenopeuden, ja täten madonreikätunneloitu paketti voidaan tunnistaa ilkivaltaisen laitteen lähettämäksi, jos se lähettää verkkoon kaksi pakettia, joiden lokaatiotiedoissa on tapahtunut maksimiliikenopeutta nopeampaa liikettä edellyttävä muutos.
 
-\paragraph{TIK-protokolla} 
+\subsubsection{TIK-protokolla} 
 \label{tik}
 \noindent \\
 Tärkeimpänä ominaisuutena koko aikahihnafunktion toiminnassa on aikaleimojen luotettavuus; leimat pitää pystyä todentamaan. Todentamisen toteuttamiseen kirjoittajat hylkäävät jaetut avaimet suoraan todeten niiden hallinnan olevan liian raskas operaatio. Toisena ideana on digitaalisen allekirjoituksen liittäminen jokaiseen pakettiin, jolloin jokaiselle laitteelle riittää yksi julkinen--yksityinen-avainpari ja jokaisen laitteen tarvitsee tietää vain tämä kaikkien julkisten avainten joukko. Digitaaliset allekirjoitukset kuitenkin yleensä perustuvat raskaaseen asymmetriseen kryptografiaan, joka ei sovi ad hoc –verkkojen oletettuun resurssivähyyteen.
@@ -234,7 +277,7 @@ Vastaanottaja tietää jo etukäteen lähettäjän julkisen avaimen, eli Merkle-
 \noindent \\
 Nämä osat tulevat tarkasti tässä järjestyksessä. Koska avainta ei ole viestin tiivistelaskennan aikaan vielä lähetetty, vastaanottaja voi nyt olla varma, ettei kukaan ole voinut väärentää tiivistettä. Vastaanottajan tarkistettua viestin aitouden se tarkistaa vielä aikahihnan rajat ja laskee, onko paketti vanhentunut.
 
-\paragraph{Resurssivaativuus} 
+\subsubsection{Resurssivaativuus} 
 \noindent \\
 Resurssien niukkuuteen kirjoittajat mainitsevat pääratkaisuna symmetrisen kryptografian käytön asymmetrisen sijaan. Asymmetrisessa kryptografiassa operaatiot voivat olla kolmesta neljään suuruusluokkaa hitaampia (100--1000-kertaisia).
 
@@ -244,13 +287,36 @@ TIK-protokollaa arvioidessaan kirjoittajat tarkastelivat silloisten -- vuoden 20
 \noindent \\
 Allekirjoitusta varten muodostettavan tiivistepuun muodostusta ja tallennusta voidaan optimoida säilömällä vain osa puusta muistissa ja laskemalla loput tarvittaessa. Tällaisen optimoinnin takia yhden vuorokauden yksityiset avaimet sisältävä osittainen puu saadaan mahtumaan 2,5 megatavuun kokonaisen puun 170 gigatavun sijaan.
 
-\subsection{Suunta-antenni}
+% 
+% 
+% 
+% 
+% 
+% 
+\subsection{Suunta-antennin käyttö madonreikähyökkäysten estämisessä}
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 Lingxuan Hu ja David Evans kuvaavat suunta-antennin käyttöä madonreikien estämisessä \cite{antenna}. Suunta-antenneja on kahdentyyppisiä: ohjattuja ja kytkettyjä. Ohjatut suunta-antennit tarjoavat tarkempaa suuntausta, mutta ne ovat yleensä liian kalliita sensoriverkkoihin. Kytketty suunta-antenni pitää sisällään useamman staattisesti suunnatun antennin, jotka muodostavat yhtä suurista lähetyssektoreista 360 asteen kattavuuden. Näitä antenneja kytketään päälle tarvittaessa, kun halutaan tiettyyn suuntaan lähettää. Suuntauksessa käytetään laitteen sisäistä kompassia sektorin numero yksi osoittaessa aina itään.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.25\linewidth]{directional-antenna-layout}
+  \caption{Suunta-antennin sektorit sekä lähetysteho suunnattuna (ulompi kaari) sekä suuntaamattomana (katkoviivalla) \cite{antenna}}
+  \label{fig:directional-layout}
+\end{figure}
 
 \noindent \\
 Protokolla perustuu naapurilistoihin ja niiden ylläpitoon. Protokolla olettaa, että verkossa on mekanismi, jolla laitteet voivat muodostaa turvallisen linkin keskenään ja että kriittiset viestit ovat salattu.
 
-\paragraph{Naapurien löytäminen}
+\subsubsection{Naapurien löytäminen}
 \noindent\\
 Kun laite A haluaa liittyä verkkoon, se käy läpi jokaisen suunta-antenninsa sektoreista ja lähettää siihen suuntaan yleisen liittymisviestin, joka sisältää A:n oman tunnisteen sekä tiedon ko. sektorin numerosta. Tämä sektori on suunnattu kaikilla laitteilla samaan suuntaan. Kun laite B vastaanottaa A:n viestin omalla sektorillaan X se ensimmäisenä tarkistaa, että A:n ilmoitettu sektori on X:stä vastakkainen. Mikäli sektori ei ole vastakkaisella puolella, kalibrointivirheen takia tai muusta syystä, pudottaa vastaanottaja paketin ja ei vastaa siihen.
 
@@ -269,37 +335,54 @@ Missä A:n ja B:n välissä on madonreiän muodostavat laitteet M1 ja M2. Täss�
 \noindent\\
 Tätä ongelmaa vastaan Hu ja Evans ehdottavat ylimääräisen todentajalaitteen vahvistusta A:n ja B:n suunnille.
 
-\paragraph{Todentajalaite}
+\subsubsection{Todentajalaite}
 \noindent\\
-Todentaja laitteen, \emph{C}, rooli on toimia todistajana A:lle B:n suhteen -- ja päinvastoin -- että B kuuluu C:lle ja että se kuuluu eli sektorilta kuin A kuulee B:n. Esimerkki:
+Todentajalaitteen, \emph{C}, rooli on toimia todistajana A:lle B:n suhteen -- ja päinvastoin -- että B kuuluu C:lle ja että se kuuluu eli sektorilta kuin A kuulee B:n. Katso kuva~\ref{fig:todentajalaitteet}.
 
 \noindent\\
-\begin{tikzpicture}
-  [scale=.8,auto=left,every node/.style={circle,fill=gray!20}]
-  \node (A) at (4,8)  {A};
-  \node (B) at (8,8) {B};
-  \node (C) at (6,9)  {C};
+\begin{figure}[h]
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\begin{tikzpicture}
+		[scale=.8,auto=left,every node/.style={circle,fill=gray!20}]
+			\node (A) at (1,1)  {A};
+  			\node (B) at (7,1) {B};
+  			\node (C) at (4,3)  {C};
+	
+			\foreach \from/\to in {A/B,A/C,B/C}
+				\draw (\from) -- (\to);
+	
+		\end{tikzpicture}
+		\caption{normaalitila}
+		\label{fig:todentaja1}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\begin{tikzpicture}
+		[scale=.8,auto=left,every node/.style={circle,fill=gray!20}]
+			\node (A) at (1,1)  {A};
+  			\node (B) at (7,1) {B};
+  			\node (C) at (4,3)  {C};
+  			\node (D) at (4,1)  {D};
 
-  \foreach \from/\to in {A/B,A/C,B/C}
-    \draw (\from) -- (\to);
-
-\end{tikzpicture}
-
+  			\foreach \from/\to in {A/D,D/B,A/C,B/C}
+    			\draw (\from) -- (\to);
+		\end{tikzpicture}
+		\caption{ilkivaltainen}
+		\label{fig:todentaja2}
+	\end{subfigure}%
+	\caption{Todentajalaite normaalitilassa (a) ja ilkivaltainen todenjalaite piilotetun hyökkääjän kanssa (b)}
+	\label{fig:todentajalaitteet}
+\end{figure}
 \noindent\\
 Mikäli B on C:n naapuri ja se on eri sektorilla C:lle kuin A:lle niin A voi luottaa B:n olevan oikeasti vieressä eikä madonreikätunnelin toisella puolella.
 
-
-\paragraph{Worawannotai-hyökkäys ja tiukka naapurin löytäminen}
+\subsubsection{Worawannotai-hyökkäys ja sen estäminen}
 \todo{Tämä kappale vaatii lisää työtä.}
 \noindent\\
-Erityistapaus todentaja-aseman hyväksikäytöstä on, jos yllä olevassa kuvassa A ja B eivät oikeasti kuule toisiaan ja C on hyökkääjä ja se saa asetettua A:n ja B:n väliin viestejä välittävän \emph{piilotetun hyökkääjän}. A tällöin pyytää C:tä todentamaan, että B on tämän naapuri eikä välissä ole madonreikää. Hyökkääjälaite C vakuuttaa A:n ja B:n olevan naapureitaan ja piilotettu hyökkääjälaite näiden välissä pääsee suorittamaan jo aiemmin kuvattuja madonreikähyökkäyksen eri keinoja - esimerkiksi salakuuntelua.
+Erityistapaus todentaja-aseman hyväksikäytöstä on, jos kuvassa~\ref{fig:todentajalaitteet} A ja B eivät oikeasti kuule toisiaan ja C on hyökkääjä ja se saa asetettua A:n ja B:n väliin viestejä välittävän \emph{piilotetun hyökkääjän} D. A tällöin pyytää C:tä todentamaan, että B on tämän naapuri eikä välissä ole madonreikää. Hyökkääjälaite C vakuuttaa A:n ja B:n olevan naapureitaan ja piilotettu hyökkääjälaite \emph{D} näiden välissä pääsee suorittamaan jo aiemmin kuvattuja madonreikähyökkäyksen eri keinoja - esimerkiksi salakuuntelua. Tätä hyökkäystä kutsutaan Worawannotai-hyökkäykseksi keksijänsä mukaan.
 
-\noindent \\
-Tätä erityistapausta varten todentajalaitteen sijainnille pitää asettaa tiukemmat rajat siten ettei todentaja saa olla kuuluvuusalueita yhdistävällä alueella.
-
-\paragraph \\
-
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \begin{subfigure}{.5\textwidth}
   \centering
   \includegraphics[width=5cm]{verifier-loose}
@@ -316,8 +399,38 @@ Tätä erityistapausta varten todentajalaitteen sijainnille pitää asettaa tiuk
 \label{fig:test}
 \end{figure}
 
+\noindent \\
+Tätä erityistapausta varten todentajalaitteen sijainnille pitää asettaa tiukemmat rajat siten ettei todentaja saa olla kuuluvuusalueita yhdistävällä alueella.
 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 \subsection{SECTOR ja MAD}
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 
 SECTOR on kokoelma toimia, joilla voidaan todentaa laitteiden tapaaminen, ja MAD on protokolla, jolla voidaan suojautua madonreikähyökkäyksiä vastaan. Nämä molemmat kuvaillaan Capkunin, Buttyanin ja Hubaux'n artikkelissa ``SECTOR: Secure Tracking of Node Encounters in Multi-hop Wireless Networks'' \cite{sector}.
 
@@ -348,8 +461,8 @@ SECTOR määrittelee kolme eri roolia, joilla on omat tehtävänsä ja jokaisell
 \noindent\\
 Puhtaissa ad hoc -verkoissa, joissa laitteet ovat yhdenvertaisia, kaikki laitteet voivat toimia kaikissa rooleissa ja täten laitteiden väliset kohtaamiset voidaan joustavasti varmentaa minkä tahansa laitekolmikon toimesta. Mikäli käytössä on tukiasemallinen hybridiverkko -- kuten monihyppyinen matkapuhelinverkko -- voi varmentajana toimia vain osa verkon laitteista: tukiasemat.
 
-\paragraph{MAD-protokolla}
-\noindent\\
+\subsubsection{MAD-protokolla}
+
 MAD-protokolla, eli molemminpuoleinen todennus etäisyysrajauksella (Mutual Authentication with Distance-Bounding, MAD), on hyvin yksinkertainen rakenteeltaan ja samalla varma tapa todentaa kahden laitteen tapaaminen. Protokollan ydinkomponentit ovat laitekohtainen satunnainen bittisarja sekä laite, joka voi autonomisesti ottaa vastaan yksibittisen haasteen ja lähettää takaisin XOR-bittioperaation tuloksen tästä bittihaasteesta ja laitteen satunnaisen bittisarjan seuraavasta bitistä.
 
 \noindent\\
@@ -361,8 +474,8 @@ Alustusvaiheen jälkeen laitteet aloittavat tuon \emph{l}-bittisen jonon läpik�
 \noindent\\
 Kun \emph{l}-bittinen jono on kulutettu loppuun, seuraa protokollan varmennusvaihe, jossa molemmat osapuolet laskevat XOR-bittioperaatioilla alkuperäisen vastapuolen bittijonon ja laskevat siitä tiivisteen omien tunnistetietojensa kanssa sekä luovuttavat alustusvaiheessa lasketun \emph{l'}-bittisen jonon. Näiden tietojen avulla molemmat laitteet voivat päästä varmuuteen, että paketteja ei ole välissä muokattu.
 
-\paragraph{Kohtaamisen ajankohdan todistustavat}
-\noindent\\
+\subsubsection{Kohtaamisen tuoreus- ja aikatakuu}
+
 SECTOR sisältää viisi erilaista tapaa todistaa kohtaamisen ajankohtaa. Nämä tavat on luokiteltu kahteen kategoriaan todistettavan ajankohdan tarkkuuden mukaan: kohtaamisen tuoreustakuu ja kohtaamisen aikatakuu. Tuoreustakuu takaa kohtaamisen tapahtuneen ennen tiettyä ajankohtaa, mutta ei todista ajankohtaa tarkasti. Kohtaamisen aikatakuu pystyy todistamaan ajankohdan halutulla tarkkuudella, joka on ennaltamäärätty. 
 
 \paragraph{Kohtaamisen tuoreustakuu (Guaranteeing Encounter Freshness, GEF)}
@@ -383,7 +496,7 @@ Koska tuoreustakuun tarkkuus kohtaamisen ajankohdan suhteen ei ole riittävä, S
 \noindent\\
 Aikatakuun tapauksessa SECTOR tarjoaa kuitenkin myös optimoidun tavan tallentaa nuo kaikkien laitteiden tiivistepuut yhdeksi tiivistepuuksi per laite, jotta ei tarvitse jaella kuin yksi juuritiiviste. Tällöin jokainen laite muodostaa oman tiivistepuunsa, mutta ne ovat isomman tiivistepuun lapsia, katso kuva~\ref{fig:sectortrees}.
 
-\begin{figure}
+\begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{tree-of-trees}
   \caption{Kohtaamisen aikatakuuta varten muodostettava optimoitu tiivistepuiden tiivistepuu \cite{sector}}
@@ -394,8 +507,8 @@ Aikatakuun tapauksessa SECTOR tarjoaa kuitenkin myös optimoidun tavan tallentaa
 \noindent\\
 Kuten luvun~\ref{tik} TIK-protokollassa, perustuu tiivistepuilla varmennus siihen, että jokaisen varmennuksen yhteydessä puun omistaja luovuttaa kaikki ne tiivistepuun solmut, jotka tarvitaan juuritiivisteen laskuun.
 
-\paragraph{Hyökkääjien ja hyökkäysmallien tyypitys}
-\noindent\\
+\subsubsection{Hyökkääjien ja hyökkäysmallien tyypitys}
+
 SECTORissa kuvaillaan kolmen eri roolin sekä kahden eri vaarannustason yhdistelmiä ja miten edellä kuvaillut eri metodit niistä selviävät. Roolitus menee kuten yllä~\ref{sector-roles} kuvattu ja vaarannustasot ovat seuraavat: laite on \emph{vihamielinen} (malicious) tai se on \emph{kaapattu} (compromised).
 
 \noindent\\
@@ -405,7 +518,35 @@ Sekä tuoreus- että aikatakuun kanssa niiden yksinkertaisimmat versiot, eli pel
 \section{Puhtaasti protokollapohjaiset puolustukset}
 Seuraavilla ratkaisuilla on laajempi käyttöpotentiaali, koska ne eivät vaadi erityislaitteistoa.
 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 \subsection{DeWorm}
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 
 Hayajneh et al kuvailevat DeWorm-protokollan \cite{deworm}, jonka mainitaan erityisesti olevan tehokas \emph{piilotettuja hyökkääjiä} vastaan -- eli madonreikähyökkääjät M1 ja M2 siirtävät paketteja keskenään eivätkä itse osallistu verkon laitteina reititykseen.
 
@@ -426,7 +567,29 @@ Toinen ongelma on niin sanotut kriittiset solmut, eli laitteet jotka legitiimist
 \noindent \\
 Viimeisimpänä ongelmana on protokollan suuri liikennemäärä: jokainen verkon noodi voi päätyä tarkistamaan madonreikien olemassaolon jokaiseen noodiin, jonka kanssa se on yhteydessä. Kirjoittajat eivät kuitenkaan kuvaile, miten laitteen pitäisi päättää aloittaa DeWorm-protokollatarkistus.
 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 \subsection{DelPHI}
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 
 Hon Sun Chiu ja King-Shan Lui kertovat viiveeseen perustuvasta DelPHI-protokollastaan \cite{delphi}. Koko protokollan ydinajatus on hyvin yksinkertainen: verkon jokaisen hypyn pitäisi olla pituudeltaan suunnilleen yhtä pitkä ja täten madonreiän voi löytää havaitsemalla reitin, jonka lähetysaika per hyppyjen määrä on suuri. Normaali reitti verkon poikki etenee tasaisin hyppäyksin, joita voi olla melko montakin verkon laidalta toiselle, mutta madonreiässä liikutaan pitkä fyysinen matka yhden hypyn aikana. Tällöin tuo yksi hyppy erottuu selkeästi hitaampana ja täten epäilyttävänä.
 
@@ -479,8 +642,30 @@ Koska molemmissa esimerkeissä signaali kulkee maksimissaan valonnopeutta ei kok
 \noindent \\
 Esimerkkiarvoina tuolle raja-arvolle $T$ annetaan 1-5 millisekuntia. Arvon ollessa 1 ms tunnistuu osa (15--20\%) valideista reiteistä madonrei'iksi ja madonrei'istä tunnistetaan suurin osa (65--97\%). Raja-arvolla 5 ms väärien tunnistusten arvo on marginaalista (1--3\%) ja madonrei'istä tunnistetaan simulaatioverkon koosta riippuen noin 10--89\%. Simulaatioverkkojen koko vaikutti merkitsevästi tunnistustarkkuuteen: raja-arvoilla 1--5 ms tunnistustarkkuus vaihteli pienemmässä verkossa 65--10,4\% ja kaksinkertaisen kokoisessa verkossa 97,6--89\%.
 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 
 \subsection{LiteWorp}
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 
 Khalil et al esittelevät naapurilistoihin ja vartiointiin perustuvan LiteWorp-protokollan \cite{liteworp}. Protokollan oletuksina on verkon staattisuus -- laitteet eivät siis liiku -- ja laitteilla olevan parien välinen jaettu avain.
 
@@ -488,7 +673,7 @@ Khalil et al esittelevät naapurilistoihin ja vartiointiin perustuvan LiteWorp-p
 \noindent \\
 A:n liittyessä verkkoon se lähettää yleislähetyksenä tiedon olemassaolostaan. Kaikki viestin kuulijat vastaavat A:lle todentaen vastauksensa heidän yhteisellä jaetulla avaimellaan. A lisää kaikki todennetun vastauksen lähettäneet laitteet naapurilistaansa, $R_A$. Kun A:n yleislähetyksen aikaraja on mennyt, se lähettää kaikille naapureilleen oman naapurilistansa todentaen viestinsä jokaiselle erikseen jaetulla avaimella. Täten liittymisen yhteydessä A tietää naapurinsa ja A:n naapurit tietävät kaikki A:n naapurit.
 
-\paragraph{Paikallinen valvonta}
+\subsubsection{Paikallinen valvonta}
 \noindent \\
 Koko protokollaan perusajatuksena on, että kaikki laitteet vartioivat kaikkea kuulemaansa liikennettä. Mikäli laite C saa laitteelta B paketin, jonka B sanoo tulevan A:lta mutta C:n tietojen mukaan A ei ole B:n naapuri, C hylkää paketin ja kohottaa B:n paha-aikeisuuslaskuria $Mal_B$ jonkin ennalta määrätyn \emph{tekaisulisäyksen} verran.
 
@@ -511,7 +696,7 @@ Alla olevan kuvaa esimerkkinä käyttäen M1:n saadessa paketin A:lta B:lle teke
 
 \end{tikzpicture}
 
-\paragraph{Eristäminen}
+\subsubsection{Eristäminen}
 \noindent \\
 Kun C on havainnut raja-arvon, $C_t$, verran rikkeitä M1 toimesta, se poistaa M1:n omalta naapurilistaltaan ja lähettää kaikille M1 naapureille tiedon siitä, että epäilee M1:stä paha-aikeiseksi laitteeksi. Kaikki M1:n naapurit tarkistavat, että C on ollut M1:n vartija, ja merkkaavat C:n omaan varoituspuskuriinsa M1:n suhteen. Laitteen saadessa luottamusrajan, $\gamma$, ylittävän määrän varoituksia M1:stä se poistaa M1:n omalta naapurilistaltaan. Tämän luottamusrajan asettaminen liian alhaiseksi voi luoda tilanteen, jossa verkon normaalit laitteet voivat joutua väärin leimatuksi ja verkosta hylätyksi. Liian korkea luottamusraja voi johtaa paha-aikeisten laitteiden huomaamatta jäämiseen. Nämä varoitukset ovat tosiaan kumulatiivisia eikä niissä ole aikarajaa.
 
@@ -525,15 +710,39 @@ Kirjoittajien analyysin perusteella todennäköisyys madonreiän tunnistamiselle
 \noindent \\
 Vaikka väärien tunnistusten mahdollisuus on jo tuotu esille, ei se todellisuudessa kirjoittajien mukaan ole kovin suuri uhka. Pahimmillaan todennäköisyys legitiimin laitteen väärään tunnistukseen paha-aikeisena 23 naapurin verkossa on 0,00003\%.
 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 \subsection{MobiWorp}
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
 
 Khalil et al jatkavat LiteWorpin ideaa staattisista verkoista verkkoihin, joissa laitteet voivat liikkua, MobiWorp-protokollallaan \cite{mobiworp}.
 
 \noindent \\
 Perusidea vartijoista ja naapurilistoista yhä sama, nyt lisänä laitteiden liikkumiseen liittyvät protokollaosat. He esittelevät kaksi uutta protokollaa: SMP-protokollan (Selfish move protocol) sekä CAP-CV-protokollan (Connectivity Aided Protocol with Constant Velocity). Näiden protokollien lisäksi yksi uusi ja fundamentaali ero LiteWorpiin on vaatimus \emph{keskitetystä auktoriteestistä} CA:sta (Central Authority), joka pystyy valvomaan ilkivaltaisesti toimivia laitteita koko niiden elinkaaren ajan -- tällöin ilkivaltainen laite ei voi paeta vastuuta liikkumalla uuteen verkon osaan.
 
-\paragraph{SMP-protokolla}
-\noindent\\
+\subsubsection{SMP-protokolla}
+
 Jokainen laite, joka haluaa toimia verkon osana, hakee CA:lta valtuutettua lupaa integroitua verkkoon tietyssä sijainnissa, x- ja y-koordinaatit, todennetulla naapuripäivitys- eli ANUM-pyynnöllä (Authentication Neighbor Update Message). CA tarkistaa tietokannastaan pyytävän laitteen nykyisten voimassaolevien tai evättyjen lupien tilan ja voi joko myöntää ANUM-luvan, lopettaa pyynnön käsittelyn tai lähettää vastauksena ANUM-eväyksen. Mikäli CA lähettää eväykseen, kaikki eväyspaketin lähetyksen kuulevat laitteet lisäävät evätyn laitteen omalle estolistalleen ja tämä laite ei koskaan voi enää päästä verkkoon takaisin.
 
 \noindent\\
@@ -542,8 +751,8 @@ Laitteen siirtyessä paikasta toiseen se menettää oikeutensa toimia verkon vä
 \noindent\\
 Kun laite siirtyy ANUM-lupansa sijainnista pois, sillä on \emph{armonaikaa} (grace period) $t_{grace}$ verran, jonka jälkeen se ei voi lähettää verkkoon enää mitään muita viestejä kuin CA:lle suunnattuja ANUM-pyyntöjä. Jos laitteen siirtymä pisteestä A pisteeseen B kestää kauemmin kuin $t_{grace}$ sen pitää välissä pyytää uusi ANUM-lupa, koska muuten se voi edes vastaanottaa sille tarkoitettuja paketteja.
 
-\paragraph{CAP-CV-protokolla}
-\noindent\\
+\subsubsection{CAP-CV-protokolla}
+
 SMP-protokolla ei sovi hyvin verkkoihin, joissa laitteiden yhdenaikainen liikkuvuus on suurta, koska näissä tilanteissa isojakin verkon osia voi olla täynnä liikkeessä olevia laitteita, joilla ei ole oikeus välittää paketteja toisilleen. Toinen ongelma SMP-protokollassa on se, ettei laite voi liikkeessään $t_{grace}$ jälkeen viestiä enää mitenkään vaikka sille olisi tarve. Näitä ongelmia varten CAP-CV-protokolla kehitettiin. Se sallii laitteen pyytää CA:lta siirtymälupaa paikasta A paikkaan B ja kertoa CA:lle samalla sen arvioitu keskisiirtymänopeus. Mikäli laite noudattaa tätä CAP-CV-protokollan ANUM-luvan reittiä ja arvioitua nopeutta se voi viestiä verkkoon koko liikkeen ajan.
 
 \section{Yhteenveto}
