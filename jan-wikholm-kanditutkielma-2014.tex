@@ -335,6 +335,7 @@ MAD-protokolla olettaa päätelaitteissa olevan lisälaitteen, joka osaa vastata
 SECTOR olettaa myös, että verkossa on jokin keskitetty auktoriteetti, joka kontrolloi verkkoon liittymistä ja antaa laitteille uniikin identiteetin. Lisäksi oletetaan, että laitteilla on parikohtaiset salaiset avaimet tai toistensa todennetut julkiset avaimet. Tämä avainten jakaminen voidaan saada aikaan esimerkiksi tallentamalla avaimet verkkoa rakentaessa manuaalisesti laitteisiin tai käyttämällä jotakin avainvaihtoprotokollaa.
 
 \paragraph{SECTORin määrittämät roolit ja niiden tehtävät}
+\label{sector-roles}
 \noindent\\
 SECTOR määrittelee kolme eri roolia, joilla on omat tehtävänsä ja jokaisella näistä on erilainen vaikutus tullessa kaapatuksi vihamielisiin toimiin.
 
@@ -393,28 +394,13 @@ Aikatakuun tapauksessa SECTOR tarjoaa kuitenkin myös optimoidun tavan tallentaa
 \noindent\\
 Kuten luvun~\ref{tik} TIK-protokollassa, perustuu tiivistepuilla varmennus siihen, että jokaisen varmennuksen yhteydessä puun omistaja luovuttaa kaikki ne tiivistepuun solmut, jotka tarvitaan juuritiivisteen laskuun.
 
-\paragraph{Hyökkääjien tyypitys}
+\paragraph{Hyökkääjien ja hyökkäysmallien tyypitys}
+\noindent\\
+SECTORissa kuvaillaan kolmen eri roolin sekä kahden eri vaarannustason yhdistelmiä ja miten edellä kuvaillut eri metodit niistä selviävät. Roolitus menee kuten yllä~\ref{sector-roles} kuvattu ja vaarannustasot ovat seuraavat: laite on \emph{vihamielinen} (malicious) tai se on \emph{kaapattu} (compromised).
 
-\begin{description}
-\item[Kohtaaja] Vihamielinen laite toimii Kohtaajan roolissa.
-\item[Todistaja] Vihamielinen laite Todistajana.
-\item[Kohtaaja-Todistaja] Vihamielinen laite molemmissa rooleissa
-\item[Tarkistaja] Vihamieinen laite yrittää kerätä tietoa Kohtaajalta jotta voi saada Todistajan luulemaan tavanneensa Kohtaajan.
-\end{description}
+\noindent\\
+Sekä tuoreus- että aikatakuun kanssa niiden yksinkertaisimmat versiot, eli pelkkä todistaja-takuu, ovat haavoittuvaisia tietyille hyökkäysmetodeille, mutta MAD-protokollan käyttö rajoittaa haavoittuvuutta paljon. Mikäli käytössä on MAD-protokolla ja todistaja--kohtaaja-takuutaso pienentyy hyökkäyspinta-ala yhteen hyökkäysmalliin: hyökkääjä jakaa saman identiteetin monen eri laitteen välillä ja täten pystyy todistamaan sellaisen kohtaamisen, jota ei ole oikeasti tapahtunut. Tähän SECTORin tekijät suosittelevat verkon topologiatarkistusta, jolla pystyttäisiin näkemään, että solmu väittää olleensa kahdessa paikkaa lähes yhtä aikaa.
 
-\paragraph{SECTOR-mekanismien toiminta hyökkäätyyppejä vastaan}
-
-\begin{itemize}
-\item GEF-Ce ja GTE-Ce
-\item GEF-Ce ja GTE-Ce MAD-protokollan kanssa
-\item GEF-CeCl ja GTE-CeCl MAD-protokollan kanssa
-\item Julkisen avaimen ja symmetrisen avaimen -mekanismit
-\item Muut hyökkäykset
-\end{itemize}
-
-\paragraph{Tila-, laskenta- ja viestintävaativuudet}
-
-Tähän ehkä taulukko eri variaatioiden vaativuuksista käännettynä kirjoittajien taulukosta.
 
 \section{Puhtaasti protokollapohjaiset puolustukset}
 Seuraavilla ratkaisuilla on laajempi käyttöpotentiaali, koska ne eivät vaadi erityislaitteistoa.
